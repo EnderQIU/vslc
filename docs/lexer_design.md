@@ -5,7 +5,8 @@
 | Token | Definition（Regular Expression）                                                 |
 | ------------- | ------------------------------------------------------------------ |
 | identifier       | `[(FUNC)|(PRINT)|RETURN|CONTINUE|IF|THEN|ELSE|FI|WHILE|DO|DONE|VAR]` |
-| operator      | `[+-*/]`                                                             |
+| assigner      | `:=`                                                             |
+| operator      | `[+-*]`                                                             |
 | delimiter     | `[\{\}\(\) \t\n]`                                                    |
 | comment       | `"//".*`                                                             |
 | variable      | `[A-Za-z]([A-Za-z]|[0-9])*`                                          |
