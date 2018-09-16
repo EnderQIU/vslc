@@ -8,12 +8,12 @@
 
 bool Scanner::isDelimiter(char c) {
     // 32 = {space}; 9 = {tab}; 10 = \n; 13 = \r
-    return c == 32 or c == 9 or c == 10 or c == 13;
+    return c == 32 || c == 9 || c == 10 || c == 13;
 }
 
 bool Scanner::isSeparator(char c) {
     // 40 = (; 41 = ); 44 = ,; 123 = {; 125 = }
-    return c == 40 or c == 41 or c == 44 or c == 123 or c == 125;
+    return c == 40 || c == 41 || c == 44 || c == 123 || c == 125;
 }
 
 bool Scanner::isColon(char c) {
@@ -28,7 +28,7 @@ bool Scanner::isEqualSign(char c) {
 
 bool Scanner::isOperator(char c) {
     // 42 = *; 43 = +; 45 = -
-    return c == 42 or c == 43 or c == 45;
+    return c == 42 || c == 43 || c == 45;
 }
 
 bool Scanner::isSlash(char c) {
@@ -37,11 +37,11 @@ bool Scanner::isSlash(char c) {
 }
 
 bool Scanner::isLineBreak(char c) {
-    return c == 10 or c == 13;
+    return c == 10 || c == 13;
 }
 
 bool Scanner::isDigit(char c) {
-    return c > 47 and c < 58;
+    return c > 47 && c < 58;
 }
 
 bool Scanner::isQuotationMark(char c) {
@@ -112,7 +112,7 @@ void Scanner::addToken(TokenType type, bool isGrammatical) {
 void Scanner::_scan(){
     initState();
 
-    // there are only switchState() or addToken() before line 'break;'
+    // there are only switchState() || addToken() before line 'break;'
     while (!source_code.isEOF()){
         switch (state){
             case 's':
@@ -163,15 +163,15 @@ void Scanner::_scan(){
             case 'a':
                 // outlook -- no stack push op!
                 if (isDelimiter(source_code.lookNextChar())
-                or isSeparator(source_code.lookNextChar())
-                or isOperator(source_code.lookNextChar())
-                or isColon(source_code.lookNextChar())){
+                || isSeparator(source_code.lookNextChar())
+                || isOperator(source_code.lookNextChar())
+                || isColon(source_code.lookNextChar())){
                     switchState('b');  // state b
                     break;
                 }
                 // recognize
                 present_char = source_code.getNextChar();
-                if (isDigit(present_char) or isalpha(present_char)){
+                if (isDigit(present_char) || isalpha(present_char)){
                     switchState('a');
                     char_stack += present_char;
                     break;
@@ -219,9 +219,9 @@ void Scanner::_scan(){
             case 'i':
                 // outlook
                 if (isSeparator(source_code.lookNextChar())
-                or isDelimiter(source_code.lookNextChar())
-                or isOperator(source_code.lookNextChar())
-                or isColon(source_code.lookNextChar())){
+                || isDelimiter(source_code.lookNextChar())
+                || isOperator(source_code.lookNextChar())
+                || isColon(source_code.lookNextChar())){
                     switchState('j');
                     break;
                 }

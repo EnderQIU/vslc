@@ -86,7 +86,7 @@ const static string TokenTypeName[26] = {
 class Token {
 public:
     TokenType type = IDENTIFIER;
-    bool isGrammatical = true;  // Have grammatical meaning or not, decide whether to pass it to parser.
+    bool isGrammatical = true;  // Have grammatical meaning || not, decide whether to pass it to parser.
     string value;
     unsigned long line = 1;
     unsigned long column = 1;
