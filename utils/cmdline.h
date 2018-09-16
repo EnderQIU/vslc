@@ -36,7 +36,10 @@
 #include <typeinfo>
 #include <cstring>
 #include <algorithm>
+// When build on windows(VC), do not include the cxxabi.h
+#ifdef __GNUC__
 #include <cxxabi.h>
+#endif
 #include <cstdlib>
 
 namespace cmdline{
@@ -104,11 +107,18 @@ namespace cmdline{
 
         static inline std::string demangle(const std::string &name)
         {
+#ifdef _MSC_VER
+            return name; // return name when using MSVC
+#elif defined(__GNUC__)
+            // For gcc
             int status=0;
             char *p=abi::__cxa_demangle(name.c_str(), 0, 0, &status);
             std::string ret(p);
             free(p);
             return ret;
+#else
+#error Unexpected c complier (msc/gcc). Need to implement this method for demangle
+#endif
         }
 
         template <class T>
@@ -721,7 +731,7 @@ namespace cmdline{
                     actual=read(value);
                     has=true;
                 }
-                catch(const std::exception &e){
+                catch(const std::exception &){
                     return false;
                 }
                 return true;
