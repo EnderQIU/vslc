@@ -28,7 +28,7 @@ SourceCodeReader::SourceCodeReader(string filename) {
 void SourceCodeReader::resetOffset() {
     offset = 0;
     line_num = 1;
-    column = 0;
+    column = 1;
 }
 
 char SourceCodeReader::getNextChar() {

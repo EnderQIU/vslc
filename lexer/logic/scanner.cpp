@@ -292,8 +292,16 @@ void Scanner::_displayResult() {
     if (token_list.empty()){
         _raiseFatalError("No result for scanner");
     }
-
-    cout<<"|\tLine\t|\tColumn\t|\tToken\t|\tValue\t|"<<endl;
+    cout << "====================================" << endl;
+    cout << "Lexer Analysis Result Table         " << endl;
+    cout << "====================================" << endl;
+    cout << setiosflags(ios::left)
+         << setw(7) << "Line"
+         << setw(7) << "Column"
+         << setw(14) << "Token"
+         << setw(20) << "Value"
+         << resetiosflags(ios::left) << endl;
+    cout << "------------------------------------" << endl;
     for (const auto &token : token_list) {
         string display_value;
         if (token.type == DELIMITER){
@@ -317,13 +325,14 @@ void Scanner::_displayResult() {
         }else{
             display_value = token.value;
         }
-        cout<<"|\t"
-        <<token.line<<"\t|\t"
-        <<token.column<<"\t|\t"
-        <<TokenTypeName[token.type]<<"\t|\t"
-        <<display_value<<"\t|"
-        <<endl;
+        cout<< setiosflags(ios::left)
+            << setw(7) <<token.line
+            << setw(7) <<token.column
+            << setw(14) <<TokenTypeName[token.type]
+            << setw(14) <<display_value
+            << resetiosflags(ios::left) <<endl;
     }
+    cout << "------------------------------------" << endl;
 }
 
 vector<Token> Scanner::scan(bool verboseMode) {
