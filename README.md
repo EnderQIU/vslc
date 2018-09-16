@@ -12,11 +12,14 @@ cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" ../vslc
 ```
 
 ## Usage
+```bash
+> vslc --help
 usage: vslc [options] ... filename
 options:
   -v, --verbose    Enable verbose mode, display the output of scanner and parser.
   -o, --output     Specify output file name. Default is a.out. (string [=a.out])
   -?, --help       print this message
+```
 
 ## Acknowledgement
 Portion of this software may utilize the following copyrighted materail, the use of which is hereby acknowledged.
