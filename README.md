@@ -8,7 +8,19 @@ cd VSLC/
 git clone git@github.com:EnderQIU/vslc.git vslc/
 mkdir build/
 cd build/
+
+# For macOS (required llvm 6.0.1, tested on macOS High Sierra)
+brew install llvm
 cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" ../vslc
+
+# For Windows (required llvm 6.0.1, tested on Windows 10 build 1803)
+cd where-you-want-llvm-to-live
+svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
+setx LLVM_PATH ...where-you-want-llvm-to-live/llvm/  # For present user
+setx LLVM_PATH ...where-you-want-llvm-to-live/llvm/ -m  # For system-wide
+# start a new cmd
+cd ...VSLC/build/
+cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 15" ../vslc
 ```
 
 ## Usage
