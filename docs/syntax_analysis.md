@@ -1,5 +1,25 @@
 # Part II: VSL Syntax Analysis Design
 
+## Position of this part
+
+```ascii
+
++------------+          +------------+          +--------------+
+|            |  Token   |            |  Syntax  |              |  IR
+|  Scanner   +--------> |   Parser   +--------> |Code Generator+------>
+|            |          |            |   Tree   |              |
++------------+          +-----+------+          +--------------+
+                              ^
+           ^                  |                     ^
+           |                  ^                     |
+           |            +-----+------+              |
+           |            |   Symbol   |              |
+           +----------> |   Table    | <------------+
+                        +------------+
+
+```
+
+
 ## VSL Grammar (in yacc format)
 ```yacc
 program	: function_list
@@ -7,13 +27,13 @@ program	: function_list
 function_list : function
 		| function_list function
 		;
-function : FUNC VARIABLE '(' parameter_list ')' statement
+function : FUNC IDENTIFIER '(' parameter_list ')' statement
 		;
 parameter_list : variable_list
 		| ε
 		;
-variable_list : VARIABLE
-		| variable_list ',' VARIABLE
+variable_list : IDENTIFIER
+		| variable_list ',' IDENTIFIER
 		;
 statement : assignment_statement
 		| return_statement
@@ -23,7 +43,7 @@ statement : assignment_statement
 		| while_statement
 		| block
 		;
-assignment_statement : VARIABLE ASSIGN expression
+assignment_statement : IDENTIFIER ASSIGN expression
 		;
 expression : expression '+' expression
 		| expression '-' expression
@@ -32,8 +52,8 @@ expression : expression '+' expression
 		| '-' expression
 		| '(' expression ')'
 		| INTEGER
-		| VARIABLE
-		| VARIABLE '(' argument_list ')'
+		| IDENTIFIER
+		| IDENTIFIER '(' argument_list ')'
 		;
 argument_list : ε
 		| expression_list
@@ -61,7 +81,7 @@ while_statement : WHILE expression DO statement DONE
 		;
 block	 : '{' declaration_list statement_list '}'
 		;
-declaration_list:
+declaration_list: ε
 		| declaration_list declaration
 		;
 declaration : VAR variable_list
@@ -71,24 +91,66 @@ statement_list : statement
 		;
 ```
 
-## Position of this part
++ Explanation: `parameter_list` is the function parameter list when declaring a function. `argument_list` is 
+the function parameter list when calling a function
 
-```ascii
-
-+------------+          +------------+          +--------------+
-|            |  Token   |            |  Syntax  |              |  IR
-|  Scanner   +--------> |   Parser   +--------> |Code Generator+------>
-|            |          |            |   Tree   |              |
-+------------+          +-----+------+          +--------------+
-                              ^
-           ^                  |                     ^
-           |                  ^                     |
-           |            +-----+------+              |
-           |            |   Symbol   |              |
-           +----------> |   Table    | <------------+
-                        +------------+
-
+### Simplify the VSL Grammar
++ Upper case letter represents a non-terminator, lower case letter represents a terminator. Just the same as the example
+of 《Compilers - Principles, Techniques, &Tools》, ε means empty.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+| Non-terminator | Reference            | Terminator | Reference    | 
+| -------------- | -------------------- | ---------- | ------------ | 
+| S              | program              | (          | L_BRACKET    | 
+| A              | function_list        | )          | R_BRACKET    | 
+| B              | function             | ,          | COMMA        | 
+| C              | parameter_list       | +          | PLUS         | 
+| D              | statement            | -          | MINUS        | 
+| E              | variable_list        | *          | MULTIPLY     | 
+| F              | assignment_statement | /          | DIVIDE       | 
+| G              | return_statement     | {          | L_CURLY_BRAC | 
+| H              | print_statement      | }          | R_CURLY_BRAC | 
+| I              | null_statement       | a          | FUNC         | 
+| J              | if_statement         | b          | IDENTIFIER   | 
+| K              | while_statement      | c          | ASSIGN       | 
+| L              | block                | d          | INTEGER      | 
+| M              | expression           | e          | PRINT        | 
+| N              | argument_list        | f          | TEXT         | 
+| O              | expression_list      | g          | RETURN       | 
+| P              | print_list           | h          | CONTINUE     | 
+| Q              | print_item           | i          | IF           | 
+| R              | declaration_list     | j          | THEN         | 
+| T              | statement_list       | k          | FI           | 
+| U              | declaration          | l          | ELSE         | 
+|                |                      | m          | WHILE        | 
+|                |                      | n          | DO           | 
+|                |                      | o          | DONE         | 
+|                |                      | p          | VAR          | 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
++ Productions
 ```
+S -> A
+A -> B | Ab
+B -> ab(C)D
+C -> E | ε
+E -> b | E,b
+D -> F | G | H | I | J | K | L
+F -> bcL
+M -> M+M | M-M | M*M | M/M | -M | (M) | d | b | b(N)
+N -> ε | O
+O -> M | O,M
+H -> eP
+P -> Q | P,Q
+Q -> M | f
+G -> gM
+I -> h
+J -> iMjDk | iMjDlDk
+K -> mMnDo
+L -> {RT}
+R -> ε | RU
+U -> pE
+T -> D | TD
+```
+----------------
 
 ## LL(1) Parsing
 
