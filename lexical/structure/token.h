@@ -32,28 +32,29 @@ enum TokenType{
     PLUS = 14,
     MINUS = 15,
     MULTIPLY = 16,
+    DIVIDE = 17,
 
     SEPARATOR = -3,
     // Separator: {, }, (, ), ,
-    L_CURLY_BRACE = 17,
-    R_CURLY_BRACE = 18,
-    L_BRACKET = 19,
-    R_BRACKET = 20,
-    COMMA = 21,
+    L_CURLY_BRACE = 18,
+    R_CURLY_BRACE = 19,
+    L_BRACKET = 20,
+    R_BRACKET = 21,
+    COMMA = 22,
 
     // Delimiter
-    DELIMITER = 22,  // Example: {whitespace}, {tab}, \n, \r
+    DELIMITER = 23,  // Example: {whitespace}, {tab}, \n, \r
 
     // Primitive
-    INTEGER = 23,
-    TEXT = 24,
+    INTEGER = 24,
+    TEXT = 25,
 
     // Comment
-    COMMENT = 25,
+    COMMENT = 26,
 };
 
 // NOLINTNEXTLINE
-const static string TokenTypeName[26] = {
+const static string TokenTypeName[27] = {
         "IDENTIFIER",
         "FUNC",
         "PRINT",
@@ -71,6 +72,7 @@ const static string TokenTypeName[26] = {
         "PLUS",
         "MINUS",
         "MULTIPLY",
+        "DIVIDE",
         "L_CURLY_BRACE",
         "R_CURLY_BRACE",
         "L_BRACKET",
@@ -86,7 +88,7 @@ const static string TokenTypeName[26] = {
 class Token {
 public:
     TokenType type = IDENTIFIER;
-    bool isGrammatical = true;  // Have grammatical meaning || not, decide whether to pass it to parser.
+    bool isGrammatical = true;  // Have grammatical meaning or not, decide whether to pass it to parser.
     string value;
     unsigned long line = 1;
     unsigned long column = 1;

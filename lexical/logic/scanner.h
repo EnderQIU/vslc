@@ -22,7 +22,7 @@ private:
     char state;  // state of DFA
     string char_stack;
     char present_char;
-    SourceCodeReader source_code;
+    SourceCodeReader* source_code;
 
     bool isDelimiter(char c);
     bool isSeparator(char c);
@@ -41,7 +41,7 @@ private:
     void _raiseScanError(string reason);
     void _raiseFatalError(string reason);
 public:
-    explicit Scanner(SourceCodeReader reader);
+    explicit Scanner(SourceCodeReader* reader);
     vector<Token> scan(bool verboseMode);
 };
 

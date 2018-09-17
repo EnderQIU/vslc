@@ -1,4 +1,4 @@
-# Part I: VSL lexer analysis design
+# Part I: VSL Lexical Analysis Design
 
 ## VSL lexer definition
 
@@ -10,7 +10,7 @@
 | delimiter     | `[\{\}\(\) \t\n]`                                                    |
 | comment       | `"//".*`                                                             |
 | variable      | `[A-Za-z]([A-Za-z]|[0-9])*`                                          |
-| text          | `\”[A-Za-z]*\”`                                                      |
+| text          | `\”[A-Za-z0-9/w]*\”`                                                      |
 | integer       | `[1-9][0-9]*`                                                        |
 
 ## System design
@@ -24,7 +24,7 @@ Here contains three parts
 
 ```ascii
 
-+-+  isAlpha()  +-+   isDelimiter()|isSeparater()   +------------+
++-+  isAlpha()  +-+   isDelimiter()|isSeparator()   +------------+
 |s+------------>+a+-------------------------------->+b|Identifier|
 +++             +-+   |isOperator()|isColon()       +------------+
  |        +----- <------+
@@ -38,19 +38,19 @@ Here contains three parts
  +--------------------------->+c|Delimiter|                  | +-+                   |
  |                            +-----------+                  | | | a unaccepted state|
  |                                                           | +-+                   |
- |       isSeparater()        +-----------+                  |                       |
- +--------------------------->+d|Seperater|                  | +-> state transform   |
+ |       isSeparator()        +-----------+                  |                       |
+ +--------------------------->+d|Separator|                  | +-> state transform   |
  |                            +-----------+                  |                       |
  |                                            !isLineBreak() | +-------------------+ |
  |       isOperator()         +-----------+    +---------+   | |x|a accepted state | |
  +--------------------------->+e|Operator |    |         |   | +-------------------+ |
- |                            +-----------+    |         |   +-----------------------+
- |                                             +---- <---+
+ |                            +^----------+    |         |   +-----------------------+
+ |                  !isSlash() |               +---- <---+
  |        isSlash()           +-+    isSlash()     +-+   isLineBreak()    +----------+
  +--------------------------->+f+----------------->+g+------------------->+h|Comment |
  |                            +-+                  +-+                    +----------+
  |
- |        isDigit()           +-+   isSeparater()|isDelimiter()+----------+
+ |        isDigit()           +-+   isSeparator()|isDelimiter()+----------+
  +--------------------------->+i+----------------------------->+j|Integer |
  |                            +-+   |isOperator()|isColon()    +----------+
  |                         +--+ <--+

@@ -85,6 +85,7 @@ void Scanner::addToken(TokenType type, bool isGrammatical) {
         if (value == "+") token = Token(PLUS, true, value);
         else if (value == "-") token = Token(MINUS, true, value);
         else if (value == "*") token = Token(MULTIPLY, true, value);
+        else if (value == "/") token = Token(DIVIDE, true, value);
         else _raiseScanError("Invalid operator type \"" + value + "\"");
 
     }
@@ -102,8 +103,8 @@ void Scanner::addToken(TokenType type, bool isGrammatical) {
     else{
         token = Token(type, isGrammatical, value);
     }
-    token.line = source_code.line_num;
-    token.column = source_code.column - value.size();
+    token.line = source_code->line_num;
+    token.column = source_code->column - value.size();
     token_list.push_back(token);
     initState();  //  go to start state
 }
@@ -113,11 +114,11 @@ void Scanner::_scan(){
     initState();
 
     // there are only switchState() || addToken() before line 'break;'
-    while (!source_code.isEOF()){
+    while (!source_code->isEOF()){
         switch (state){
             case 's':
                 // recognize
-                present_char = source_code.getNextChar();
+                present_char = source_code->getNextChar();
                 if (isalpha(present_char)){
                     switchState('a');
                     char_stack += present_char;
@@ -162,15 +163,15 @@ void Scanner::_scan(){
                 break;
             case 'a':
                 // outlook -- no stack push op!
-                if (isDelimiter(source_code.lookNextChar())
-                || isSeparator(source_code.lookNextChar())
-                || isOperator(source_code.lookNextChar())
-                || isColon(source_code.lookNextChar())){
+                if (isDelimiter(source_code->lookNextChar())
+                || isSeparator(source_code->lookNextChar())
+                || isOperator(source_code->lookNextChar())
+                || isColon(source_code->lookNextChar())){
                     switchState('b');  // state b
                     break;
                 }
                 // recognize
-                present_char = source_code.getNextChar();
+                present_char = source_code->getNextChar();
                 if (isDigit(present_char) || isalpha(present_char)){
                     switchState('a');
                     char_stack += present_char;
@@ -192,23 +193,26 @@ void Scanner::_scan(){
                 addToken(OPERATOR, true);
                 break;
             case 'f':
+                // outlook
+                if (!isSlash(source_code->lookNextChar())){
+                    switchState('e');
+                    break;
+                }
                 // recognize
-                present_char = source_code.getNextChar();
+                present_char = source_code->getNextChar();
                 if (isSlash(present_char)){
                     switchState('g');
                     char_stack += present_char;
                     break;
                 }
-                _raiseScanError("Unexpected token");
-                break;
             case 'g':
                 // outlook
-                if (!isLineBreak(source_code.lookNextChar())){
+                if (!isLineBreak(source_code->lookNextChar())){
                     switchState('g');
                     break;
                 }else{
                     // direct recognize
-                    present_char = source_code.getNextChar();
+                    present_char = source_code->getNextChar();
                     switchState('h');
                     char_stack += present_char;
                     break;
@@ -218,15 +222,15 @@ void Scanner::_scan(){
                 break;
             case 'i':
                 // outlook
-                if (isSeparator(source_code.lookNextChar())
-                || isDelimiter(source_code.lookNextChar())
-                || isOperator(source_code.lookNextChar())
-                || isColon(source_code.lookNextChar())){
+                if (isSeparator(source_code->lookNextChar())
+                || isDelimiter(source_code->lookNextChar())
+                || isOperator(source_code->lookNextChar())
+                || isColon(source_code->lookNextChar())){
                     switchState('j');
                     break;
                 }
                 // recognize
-                present_char = source_code.getNextChar();
+                present_char = source_code->getNextChar();
                 if (isDigit(present_char)){
                     switchState('i');
                     char_stack += present_char;
@@ -239,7 +243,7 @@ void Scanner::_scan(){
                 break;
             case 'k':
                 // outlook
-                present_char = source_code.getNextChar();
+                present_char = source_code->getNextChar();
                 if (!isQuotationMark(present_char)){
                     switchState('k');
                     char_stack += present_char;
@@ -253,8 +257,8 @@ void Scanner::_scan(){
                 addToken(TEXT, true);
                 break;
             case 'm':
-                if (isEqualSign(source_code.lookNextChar())){
-                    present_char = source_code.getNextChar();
+                if (isEqualSign(source_code->lookNextChar())){
+                    present_char = source_code->getNextChar();
                     switchState('n');
                     char_stack += present_char;
                     break;
@@ -271,9 +275,10 @@ void Scanner::_scan(){
 }
 
 void Scanner:: _raiseScanError(string reason) {
-    cerr<<"ERROR: Lexer Error: "<<reason<<" at line "<<source_code.line_num<<" column "<<source_code.column - char_stack.size()<<"."<<endl;
-    cerr<<source_code.getLine(source_code.line_num);
-    for (int i = 0; i < source_code.column; i++) cerr<<'~';
+    cerr<<"ERROR: Lexical Error: "<<reason<<" at line "<<source_code->line_num<<" column "<<source_code->column - char_stack.size()<<"."<<endl;
+    cerr<<source_code->getLine(source_code->line_num);
+    for (int i = 0; i < source_code->column - char_stack.size(); i++) cerr<<' ';
+    if (!char_stack.empty()) for (int i = 0; i < char_stack.size(); i++) cerr<<'~';
     cerr<<'^'<<endl;
     cerr<<"Present DFA-Ext(1) information:"<<endl;
     cerr<<"State: "<<state<<endl;
@@ -283,7 +288,7 @@ void Scanner:: _raiseScanError(string reason) {
 }
 
 void Scanner::_raiseFatalError(string reason) {
-    cerr<<"FATAL ERROR: Lexer error: "<<reason<<"."<<endl;
+    cerr<<"FATAL ERROR: Lexical error: "<<reason<<"."<<endl;
     exit(-1);
 }
 
@@ -293,7 +298,7 @@ void Scanner::_displayResult() {
         _raiseFatalError("No result for scanner");
     }
     cout << "====================================" << endl;
-    cout << "Lexer Analysis Result Table         " << endl;
+    cout << "Lexical Analysis Result Table         " << endl;
     cout << "====================================" << endl;
     cout << setiosflags(ios::left)
          << setw(7) << "Line"
@@ -343,6 +348,6 @@ vector<Token> Scanner::scan(bool verboseMode) {
     return token_list;
 }
 
-Scanner::Scanner(SourceCodeReader reader) {
-    this->source_code = std::move(reader);
+Scanner::Scanner(SourceCodeReader* reader) {
+    this->source_code = reader;
 }
