@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "utils/cmdline.h"
-#include "lexer/logic/scanner.h"
+#include "lexical/logic/scanner.h"
 
 int main(int argc, char* argv[]) {
     // initialize configuration.
@@ -31,13 +31,18 @@ int main(int argc, char* argv[]) {
     } else inputFileName = parser.rest()[0];
 
     // Read source code file
-    SourceCodeReader reader = SourceCodeReader(inputFileName);
+    SourceCodeReader* reader = new SourceCodeReader(inputFileName);
 
-    // lexer analysis
-    Scanner *scanner = new Scanner(reader);
+    // lexical analysis
+    auto *scanner = new Scanner(reader);
     vector<Token> scanner_result = scanner->scan(verboseMode);
 
-    // syntactic analysis
+    // clear non-grammatical tokens
+    auto * tokens = new vector<Token>();
+    for (auto &i : scanner_result) if (i.isGrammatical) tokens->push_back(i);
+    delete scanner;  // free scanner, useless afterwards
+
+    // syntax analysis
 
     return 0;
 }
