@@ -120,3 +120,7 @@ Temporary Items
 
 
 # End of https://www.gitignore.io/api/cmake,macos,clion+all
+
+# vslc-ff node modules
+tools/vslc-ff/node_modules/
+tools/vslc-ff/package-lock.json
