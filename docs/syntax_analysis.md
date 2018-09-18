@@ -202,16 +202,16 @@ T' -> DT' | ε
 ```
 
 - `M -> M+V | M-V | V`
- ```production
- M->VM'
- M'->+VM'|-VM'|^
- ```
+```production
+M  -> VM'
+M' -> +VM' | -VM' | ε
+```
 
- - `V -> V*W | V/W | W`
- ```production
- V->WV'
- V'->*WV'|/WV'|^
- ```
+- `V -> V*W | V/W | W`
+```production
+V  -> WV'
+V' -> *WV' | /WV' | ε
+```
 
 
 3. Left Factoring
@@ -223,9 +223,9 @@ J' -> iMjD | iMjDlDk
 ```
 
 - `W -> (M) | d | b | b(N)`
- ```production
- W->(M)|d|bW'
- W'->(N)|^
- ```
+```production
+W  -> (M) | d | bW'
+W' -> (N) | ^
+```
 
 4. 
