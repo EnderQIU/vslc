@@ -274,3 +274,5 @@ cd tools/vslc-ff/
 npm install
 node grammar.js
 ```
+
+5. Parsing Table

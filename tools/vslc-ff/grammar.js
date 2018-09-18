@@ -1,6 +1,6 @@
 let Grammar = require('first-follow').Grammar;
 
-let grammar = new Grammar([
+const productions = [
     {
         left: "S",
         right: ["A"]
@@ -19,7 +19,7 @@ let grammar = new Grammar([
     },
     {
         left: "B",
-        right: ["a", "b", "(", "c", ")", "D"]
+        right: ["a", "b", "(", "C", ")", "D"]
     },
     {
         left: "C",
@@ -225,18 +225,28 @@ let grammar = new Grammar([
         left: "T'",
         right: [null]
     }
-]);
+]
 
-console.log("=====================");
-console.log("FIRST SETS");
-console.log("=====================");
-console.log(grammar.getFirstSets());
-console.log("=====================");
-console.log("FOLLOW SETS");
-console.log("=====================");
-console.log(grammar.getFollowSets());
-console.log("=====================");
-console.log("PREDICT SETS");
-console.log("=====================");
-console.log(grammar.getPredictSets());
-console.log("=====================");
+let grammar = new Grammar(productions);
+
+// console.log("=====================");
+// console.log("FIRST SETS");
+// console.log("=====================");
+// console.log(grammar.getFirstSets());
+// console.log("=====================");
+// console.log("FOLLOW SETS");
+// console.log("=====================");
+// console.log(grammar.getFollowSets());
+// console.log("=====================");
+// console.log("PREDICT SETS");
+// console.log("=====================");
+// console.log(grammar.getPredictSets());
+// console.log("=====================");
+
+let select_set = grammar.getPredictSets();
+
+for (let i = 0; i<productions.length; i++) {
+    let production_right = "";
+    for (let s of productions[i].right) production_right+=s;
+    console.log("SELECT("+productions[i].left+" -> "+production_right.toString().replace("null", "ε")+") = {" + select_set[(i+1).toString()].toString()+"}");
+}
