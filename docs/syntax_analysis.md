@@ -121,8 +121,8 @@ of 《Compilers - Principles, Techniques, &Tools》, ε means empty.
 | R              | declaration_list     | j          | THEN         | 
 | T              | statement_list       | k          | FI           | 
 | U              | declaration          | l          | ELSE         | 
-|                |                      | m          | WHILE        | 
-|                |                      | n          | DO           | 
+| V              | term                 | m          | WHILE        | 
+| W              | factor               | n          | DO           | 
 |                |                      | o          | DONE         | 
 |                |                      | p          | VAR          | 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,11 +153,21 @@ T -> D | TD
 ----------------
 
 ## LL(1) Parsing
+1. Fix priority of arithmetic
 
-1. Elimination of Left Recursion
+For production `M -> M+M | M-M | M*M | M/M | -M | (M) | d | b | b(N)`
++ Add two non-terminators V: term, W: factor
+
+```production
+M -> M+V | M-V | V            
+V -> V*W | V/W | W          
+W -> (M) | d | b | b(N)
+```
+
+2. Elimination of Left Recursion
 
 
+3. Left Factoring
 
-2. Left Factoring
 
-3.
+4. 
