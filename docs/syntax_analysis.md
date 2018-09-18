@@ -159,12 +159,47 @@ For production `M -> M+M | M-M | M*M | M/M | -M | (M) | d | b | b(N)`
 + Add two non-terminators V: term, W: factor
 
 ```production
-M -> M+V | M-V | V            
-V -> V*W | V/W | W          
+M -> M+V | M-V | V
+V -> V*W | V/W | W
 W -> (M) | d | b | b(N)
 ```
 
 2. Elimination of Left Recursion
+- `A -> B | Ab`
+```production
+A  -> BA'
+A' -> bA' | ε
+```
+
+- `E -> b | E,b`
+```production
+E  -> bE'
+E' -> ,bE' | ε
+```
+
+- `O -> M | O,M`
+```production
+O  -> MO'
+O' -> ,MO' | ε
+```
+
+- `P -> Q | P,Q`
+```production
+P  -> QP'
+P' -> ,QP' | ε
+```
+
+- `R -> ε | RU`
+```production
+R  -> R'
+R' -> UR' | ε
+```
+
+- `T -> D | TD`
+```production
+T  -> DT'
+T' -> DT' | ε
+```
 
 
 3. Left Factoring
