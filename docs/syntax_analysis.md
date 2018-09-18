@@ -259,12 +259,12 @@ nonTerminal = {a , b , c}
 IF
 SELECT(A -> ab) = {a , c}
 Then 
---------------------------------------
-|	  	a    	b    	c    	ε    |
-|  A  A->ab			  A->ab			 |
-|  B								 |
---------------------------------------
-```production
+-------------------------------------------------
+|	  	a    	b    	c    	ε	|
+|  A  		A->ab		A->ab		|
+|  B						|
+-------------------------------------------------
+
 Production p;
 table[0][0]=p;
 table[0][2]=p;
@@ -281,7 +281,7 @@ Class TreeNode{
 ```
 
 10. Algorithm Graph
-see syntax_analysis_algrorithm.jpg
+- `see syntax_analysis_algrorithm.jpg`
 
 
 
