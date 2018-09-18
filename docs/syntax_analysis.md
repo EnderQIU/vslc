@@ -225,7 +225,63 @@ J' -> iMjD | iMjDlDk
 - `W -> (M) | d | b | b(N)`
 ```production
 W  -> (M) | d | bW'
-W' -> (N) | ^
+W' -> (N) | ε
 ```
 
-4. 
+4. Calculate FIRST Set
+5. Calculate FOLLOW Set
+6. Calculate SELECT Set
+7. Define Production Class
+```production
+class Production{
+	Token left;
+	List<Token> right;
+}
+
+//eg.
+//A -> ab
+Token A , a , b;
+Production p = new Production();
+p.left=A;
+p.right.push(a);
+p.right.push(b);
+```
+
+8. Fill In Predicting Analysis Table
+```production
+Token terminal[?];
+Token nonTerminal[?];
+production[terminal.size()][nonTerminal.size()] table;
+
+//eg.
+terminal = {A , B}
+nonTerminal = {a , b , c}
+IF
+SELECT(A -> ab) = {a , c}
+Then 
+--------------------------------------
+|	  	a    	b    	c    	ε    |
+|  A  A->ab			  A->ab			 |
+|  B								 |
+--------------------------------------
+```production
+Production p;
+table[0][0]=p;
+table[0][2]=p;
+```
+
+9. Define Abstract TreeNode
+```production
+Class TreeNode{
+	Token origin; 
+	List<TreeNode> children;
+	//return the nonTerminal TreeNode in children which has the lowest index
+	public getLeftNonTerminal();
+}
+```
+
+10. Algorithm Graph
+see syntax_analysis_algrorithm.jpg
+
+
+
