@@ -195,15 +195,26 @@ W -> (M) | d | b | b(N)
 
 
 
+           
+         
 
 
 
 
+`M -> M+V | M-V | V`
+```production
+M->VM'
+M'->+VM'|-VM'|^
+```
 
+`V -> V*W | V/W | W`
+```production
+V->WV'
+V'->*WV'|/WV'|^
+```
 
-M->VM`
-M`->+VM`|-VM`|^
-V->WV`
-V`->*WV`|/WV`|^
-W->(M)|d|bW`
-W`->(N)|^
+`W -> (M) | d | b | b(N)`
+```production
+W->(M)|d|bW'
+W'->(N)|^
+```
