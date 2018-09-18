@@ -204,5 +204,10 @@ T' -> DT' | ε
 
 3. Left Factoring
 
+- `J -> iMjDk | iMjDlDk`
+```production
+J  -> J'
+J' -> iMjD | iMjDlDk
+```
 
 4. 
