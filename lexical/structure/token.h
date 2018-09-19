@@ -42,12 +42,12 @@ enum TokenType{
     R_BRACKET = 21,
     COMMA = 22,
 
-    // Delimiter
-    DELIMITER = 23,  // Example: {whitespace}, {tab}, \n, \r
-
     // Primitive
-    INTEGER = 24,
-    TEXT = 25,
+    INTEGER = 23,
+    TEXT = 24,
+
+    // Delimiter
+    DELIMITER = 25,  // Example: {whitespace}, {tab}, \n, \r
 
     // Comment
     COMMENT = 26,
@@ -78,9 +78,9 @@ const static string TokenTypeName[27] = {
         "L_BRACKET",
         "R_BRACKET",
         "COMMA",
-        "DELIMITER",
         "INTEGER",
         "TEXT",
+        "DELIMITER",
         "COMMENT",
 };
 
