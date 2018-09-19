@@ -275,4 +275,60 @@ npm install
 node grammar.js
 ```
 
-5. Parsing Table
+5. Calculate SELECT Set
+
+6. Define Production Class
+```production
+class Production{
+	Token left;
+	List<Token> right;
+}
+
+//eg.
+//A -> ab
+Token A , a , b;
+Production p = new Production();
+p.left=A;
+p.right.push(a);
+p.right.push(b);
+```
+
+7. Fill In Predicting Analysis Table
+```production
+Token terminal[?];
+Token nonTerminal[?];
+production[terminal.size()][nonTerminal.size()] table;
+
+//eg.
+terminal = {A , B}
+nonTerminal = {a , b , c}
+IF
+SELECT(A -> ab) = {a , c}
+Then 
+-------------------------------------------------
+|	  	a    	b    	c    	ε	|
+|  A  		A->ab		A->ab		|
+|  B						|
+-------------------------------------------------
+
+Production p;
+table[0][0]=p;
+table[0][2]=p;
+```
+
+8. Define Abstract TreeNode
+```production
+Class TreeNode{
+	Token origin; 
+	List<TreeNode> children;
+	//return the nonTerminal TreeNode in children which has the lowest index
+	public getLeftNonTerminal();
+}
+```
+
+9. Algorithm Graph
+- `see syntax_analysis_algrorithm.jpg`
+
+
+
+
