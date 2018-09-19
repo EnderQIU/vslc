@@ -225,7 +225,54 @@ J' -> iMjD | iMjDlDk
 - `W -> (M) | d | b | b(N)`
 ```production
 W  -> (M) | d | bW'
-W' -> (N) | ^
+W' -> (N) | ε
 ```
 
-4. 
+4. FIRST & FOLLOW sets
+We use first-follow package to generate FIRST & FOLLOW. Tools are stored in tools/vslc-ff/.
+
+- Final grammar
+```production
+S -> A
+A  -> BA'
+A' -> bA' | ε
+B -> ab(C)D
+C -> E | ε
+E  -> bE'
+E' -> ,bE' | ε
+D -> F | G | H | I | J | K | L
+F -> bcL
+M  -> VM'
+M' -> +VM' | -VM' | ε
+V  -> WV'
+V' -> *WV' | /WV' | ε
+W  -> (M) | d | bW'
+W' -> (N) | ε
+N -> ε | O
+O  -> MO'
+O' -> ,MO' | ε
+H -> eP
+P  -> QP'
+P' -> ,QP' | ε
+Q -> M | f
+G -> gM
+I -> h
+J  -> J'
+J' -> iMjD | iMjDlDk
+K -> mMnDo
+L -> {RT}
+R  -> R'
+R' -> UR' | ε
+U -> pE
+T  -> DT'
+T' -> DT' | ε
+```
+
+- Instruction
+```bash
+cd tools/vslc-ff/
+npm install
+node grammar.js
+```
+
+5. Parsing Table

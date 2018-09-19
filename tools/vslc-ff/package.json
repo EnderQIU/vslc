@@ -1,0 +1,9 @@
+{
+  "name" : "vslc-ff",
+  "version" : "0.0.1",
+  "author": "EnderQIU",
+  "description": "FIRST & FOLLOW sets generator for vslc syntax parsing.",
+  "dependencies": {
+    "first-follow": "latest"
+  }
+}

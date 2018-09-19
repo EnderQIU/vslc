@@ -103,8 +103,13 @@ void Scanner::addToken(TokenType type, bool isGrammatical) {
     else{
         token = Token(type, isGrammatical, value);
     }
-    token.line = source_code->line_num;
-    token.column = source_code->column - value.size();
+    if (value == "\n") {
+        token.line = source_code->line_num - 1;
+        token.column = source_code->getLine(token.line).size();
+    }else{
+        token.line = source_code->line_num;
+        token.column = source_code->column - value.size();
+    }
     token_list.push_back(token);
     initState();  //  go to start state
 }
@@ -208,13 +213,13 @@ void Scanner::_scan(){
             case 'g':
                 // outlook
                 if (!isLineBreak(source_code->lookNextChar())){
+                    present_char = source_code->getNextChar();
                     switchState('g');
+                    char_stack += present_char;
                     break;
                 }else{
                     // direct recognize
-                    present_char = source_code->getNextChar();
                     switchState('h');
-                    char_stack += present_char;
                     break;
                 }
             case 'h':
@@ -334,7 +339,7 @@ void Scanner::_displayResult() {
             << setw(7) <<token.line
             << setw(7) <<token.column
             << setw(14) <<TokenTypeName[token.type]
-            << setw(14) <<display_value
+            << setw(20) <<display_value
             << resetiosflags(ios::left) <<endl;
     }
     cout << "------------------------------------" << endl;
