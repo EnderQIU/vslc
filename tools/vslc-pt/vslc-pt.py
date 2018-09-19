@@ -60,11 +60,11 @@ if __name__ == '__main__':
     # generate parsing table
     writer = pytablewriter.writer.MarkdownTableWriter()
     writer.table_name = "Parsing Table"
-    writer.header_list = [' '] + terminators
+    writer.header_list = [' '] + sorted(terminators)
     matrix = []
     for non_terminator in parsing_table.keys():
         line = [non_terminator]
-        for t in terminators:
+        for t in sorted(terminators):
             if t in parsing_table.get(non_terminator).keys():
                 line.append(' ' + parsing_table[non_terminator][t] + ' ')
             else:
