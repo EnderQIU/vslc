@@ -1,4 +1,6 @@
 import collections
+import pytablewriter
+
 
 class SelectSet:
 
@@ -52,5 +54,21 @@ if __name__ == '__main__':
         for s in select_sets:
             if t in s.terminators:
                 if t in parsing_table[s.non_terminator].keys():
-                    raise Exception()
+                    raise Exception()  # Check parsing table
                 parsing_table[s.non_terminator][t] = s.production
+
+    # generate parsing table
+    writer = pytablewriter.writer.MarkdownTableWriter()
+    writer.table_name = "Parsing Table"
+    writer.header_list = [' '] + terminators
+    matrix = []
+    for non_terminator in parsing_table.keys():
+        line = [non_terminator]
+        for t in terminators:
+            if t in parsing_table.get(non_terminator).keys():
+                line.append(' ' + parsing_table[non_terminator][t] + ' ')
+            else:
+                line.append(' ')
+        matrix.append(line)
+    writer.value_matrix = matrix
+    writer.write_table()
