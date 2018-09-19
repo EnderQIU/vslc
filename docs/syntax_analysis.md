@@ -218,8 +218,8 @@ V' -> *WV' | /WV' | ε
 
 - `J -> iMjDk | iMjDlDk`
 ```production
-J  -> J'
-J' -> iMjD | iMjDlDk
+J  -> iMjDJ'
+J' -> k | lDk
 ```
 
 - `W -> (M) | d | b | b(N)`
