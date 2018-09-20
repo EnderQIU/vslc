@@ -11,6 +11,8 @@
 #include "../structure/production.h"
 #include "../structure/parsing_table.h"
 
+#include <algorithm>
+
 class Parser {
 private:
     InputBuffer* inputBuffer;

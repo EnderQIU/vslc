@@ -21,7 +21,9 @@ AST* Parser::_parse() {
             Production p = parsingTable.getEntry(X.type, ip.type);
             productions.push_back(p);
             parsingStack->pop();
-            for (const Symbol &s: p.right) parsingStack->push(s);
+            // reverse iterator
+            reverse(p.right.begin(), p.right.end());
+            for(vector<Symbol>::iterator it = p.right.begin(); it != p.right.end(); it++) parsingStack->push(*it);
         }
         X = parsingStack->top();
     }
