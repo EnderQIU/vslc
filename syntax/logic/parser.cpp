@@ -23,7 +23,7 @@ AST* Parser::_parse() {
             parsingStack->pop();
             // reverse iterator
             reverse(p.right.begin(), p.right.end());
-            for(vector<Symbol>::iterator it = p.right.begin(); it != p.right.end(); it++) parsingStack->push(*it);
+            for (auto &it : p.right) parsingStack->push(it);
         }
         X = parsingStack->top();
     }
