@@ -127,3 +127,6 @@ tools/vslc-ff/package-lock.json
 
 # vslf-pt venv
 tools/vslc-pt/venv/
+
+# git_stats
+git_stats/

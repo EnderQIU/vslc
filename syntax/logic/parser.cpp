@@ -14,11 +14,11 @@ AST* Parser::_parse() {
         else if (X.isTerminal()){
             _raiseError();
         }
-        else if (parsingTable.isErrorEntry(X, ip)){
+        else if (parsingTable.isErrorEntry(X.type, ip.type)){
             _raiseErrorEntry();
         }
         else{
-            Production p = parsingTable.getEntry(X, ip);
+            Production p = parsingTable.getEntry(X.type, ip.type);
             productions.push_back(p);
             parsingStack->pop();
             for (const Symbol &s: p.right) parsingStack->push(s);
