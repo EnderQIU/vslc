@@ -124,3 +124,9 @@ Temporary Items
 # vslc-ff node modules
 tools/vslc-ff/node_modules/
 tools/vslc-ff/package-lock.json
+
+# vslf-pt venv
+tools/vslc-pt/venv/
+
+# git_stats
+git_stats/

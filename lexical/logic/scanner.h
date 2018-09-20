@@ -18,7 +18,7 @@ using namespace std;
 
 class Scanner {
 private:
-    vector<Token> token_list;  // result of lexical analysis
+    vector<Token*> token_list;  // result of lexical analysis
     char state;  // state of DFA
     string char_stack;
     char present_char;
@@ -42,7 +42,7 @@ private:
     void _raiseFatalError(string reason);
 public:
     explicit Scanner(SourceCodeReader* reader);
-    vector<Token> scan(bool verboseMode);
+    vector<Token*> scan(bool verboseMode);
 };
 
 

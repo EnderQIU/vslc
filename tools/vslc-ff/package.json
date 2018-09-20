@@ -5,5 +5,8 @@
   "description": "FIRST & FOLLOW sets generator for vslc syntax parsing.",
   "dependencies": {
     "first-follow": "latest"
+  },
+  "scripts": {
+    "vslc-ff": "node grammar.js"
   }
 }
