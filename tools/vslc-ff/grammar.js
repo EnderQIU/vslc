@@ -179,15 +179,15 @@ const productions = [
     },
     {
         left: "J",
-        right: ["J'"]
+        right: ["i", "M", "j", "D", "J'"]
     },
     {
         left: "J'",
-        right: ["i", "M", "j", "D"]
+        right: ["k"]
     },
     {
         left: "J'",
-        right: ["i", "M", "j", "D", "l", "D", "K"]
+        right: ["l", "D", "K"]
     },
     {
         left: "K",

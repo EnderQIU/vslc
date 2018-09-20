@@ -6,88 +6,58 @@
 #define VSLC_TOKEN_H
 
 #include <string>
+#include <iostream>
 
 using namespace std;
 
-enum TokenType{
-    IDENTIFIER = 0,
-    // Identifier
-    FUNC = 1,
-    PRINT = 2,
-    RETURN = 3,
-    CONTINUE = 4,
-    IF = 5,
-    THEN = 6,
-    ELSE = 7,
-    FI = 8,
-    WHILE = 9,
-    DO = 10,
-    DONE = 11,
-    VAR = 12,  // Variable  a special type of identifier
+enum class TokenType{  // Due to enum can't be duplicate, use enum class instead enum for SymbolType
+    IDENTIFIER,
+    // Identifier: We regard Keyword as a subclass of identifier
+    FUNC,
+    PRINT,
+    RETURN,
+    CONTINUE,
+    IF,
+    THEN,
+    ELSE,
+    FI,
+    WHILE,
+    DO,
+    DONE,
+    VAR,  // Variable  a special type of identifier
 
-    ASSIGN = 13,  // :=
+    ASSIGN,  // :=
 
-    OPERATOR = -2,
+    OPERATOR,
     // Operator
-    PLUS = 14,
-    MINUS = 15,
-    MULTIPLY = 16,
-    DIVIDE = 17,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
 
-    SEPARATOR = -3,
+    SEPARATOR,
     // Separator: {, }, (, ), ,
-    L_CURLY_BRACE = 18,
-    R_CURLY_BRACE = 19,
-    L_BRACKET = 20,
-    R_BRACKET = 21,
-    COMMA = 22,
+    L_CURLY_BRACE,
+    R_CURLY_BRACE,
+    L_BRACKET,
+    R_BRACKET,
+    COMMA,
 
     // Primitive
-    INTEGER = 23,
-    TEXT = 24,
+    INTEGER,
+    TEXT,
 
     // Delimiter
-    DELIMITER = 25,  // Example: {whitespace}, {tab}, \n, \r
+    DELIMITER,  // Example: {whitespace}, {tab}, \n, \r
 
     // Comment
-    COMMENT = 26,
+    COMMENT,
 };
 
-// NOLINTNEXTLINE
-const static string TokenTypeName[27] = {
-        "IDENTIFIER",
-        "FUNC",
-        "PRINT",
-        "RETURN",
-        "CONTINUE",
-        "IF",
-        "THEN",
-        "ELSE",
-        "FI",
-        "WHILE",
-        "DO",
-        "DONE",
-        "VAR",
-        "ASSIGN",
-        "PLUS",
-        "MINUS",
-        "MULTIPLY",
-        "DIVIDE",
-        "L_CURLY_BRACE",
-        "R_CURLY_BRACE",
-        "L_BRACKET",
-        "R_BRACKET",
-        "COMMA",
-        "INTEGER",
-        "TEXT",
-        "DELIMITER",
-        "COMMENT",
-};
 
-// Abstract base class
 class Token {
 public:
-    TokenType type = IDENTIFIER;
+    TokenType type = TokenType::IDENTIFIER;
     bool isGrammatical = true;  // Have grammatical meaning or not, decide whether to pass it to parser.
     string value;
     unsigned long line = 1;
@@ -95,6 +65,8 @@ public:
 
     Token(TokenType type, bool isGrammatical, string value);
     Token() = default;
+    Token(const Token& token);  // deep copy contructor
+    string getDisplay();
 };
 
 #endif //VSLC_TOKEN_H
