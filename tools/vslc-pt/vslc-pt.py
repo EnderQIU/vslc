@@ -62,7 +62,7 @@ if __name__ == '__main__':
     writer.table_name = "Parsing Table"
     writer.header_list = [' '] + sorted(terminators)
     matrix = []
-    for non_terminator in parsing_table.keys():
+    for non_terminator in sorted(parsing_table.keys()):
         line = [non_terminator]
         for t in sorted(terminators):
             if t in parsing_table.get(non_terminator).keys():

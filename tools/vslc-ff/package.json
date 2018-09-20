@@ -7,6 +7,6 @@
     "first-follow": "latest"
   },
   "scripts": {
-    "start": "node grammar.js"
+    "vslc-ff": "node grammar.js"
   }
 }
