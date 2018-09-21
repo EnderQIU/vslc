@@ -10,24 +10,30 @@ AST Parser::_parse() {
     ip = inputBuffer.present();
     X = parsingStack.top();
     while(ip.type != SymbolType::HASHTAG){
-        if (X.type == ip.type){
-            parsingStack.pop();
-            inputBuffer.next();
-        }
-        else if (X.isTerminal()){
-            _raiseError(X);
-        }
-        else if (parsingTable.isErrorEntry(X.type, ip.type)){
-            _raiseErrorEntry(X, ip);
-        }
-        else{
-            Production p = parsingTable.getEntry(X.type, ip.type);
-            productions.push_back(p);
-            parsingStack.pop();
-            // reverse iterator
-            reverse(p.right.begin(), p.right.end());
-            for (auto &it : p.right) if (it.type != SymbolType::EPSILON) parsingStack.push(it);
-        }
+		if (X.isTerminal()) {
+			if (X.type == ip.type) {
+				parsingStack.pop();
+				inputBuffer.next();
+			}
+			else
+			{
+				_raiseError(X);
+			}
+		}
+		else if (parsingTable.isErrorEntry(X.type, ip.type))
+		{
+			_raiseErrorEntry(X, ip);
+		}
+		else
+		{
+			Production p = parsingTable.getEntry(X.type, ip.type);
+			productions.push_back(p);
+			parsingStack.pop();
+			// reverse iterator
+			reverse(p.right.begin(), p.right.end());
+			for (auto &it : p.right) if (it.type != SymbolType::EPSILON) parsingStack.push(it);
+		}
+
         ip = inputBuffer.present();
         X = parsingStack.top();
     }
