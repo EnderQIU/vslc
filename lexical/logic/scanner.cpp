@@ -1,5 +1,7 @@
 #include <utility>
 
+#include <utility>
+
 //
 // Created by enderqiu on 2018/9/15.
 //
@@ -65,50 +67,50 @@ void Scanner::switchState(char targetState) {
 void Scanner::addToken(TokenType type, bool isGrammatical) {
     string value = char_stack;
     Token token;
-    if (type == IDENTIFIER){
-        if (value == "FUNC") token = Token(FUNC, true, value);
-        else if (value == "PRINT") token = Token(PRINT, true, value);
-        else if (value == "RETURN") token = Token(RETURN, true, value);
-        else if (value == "CONTINUE") token = Token(CONTINUE, true, value);
-        else if (value == "IF") token = Token(IF, true, value);
-        else if (value == "THEN") token = Token(THEN, true, value);
-        else if (value == "ELSE") token = Token(ELSE, true, value);
-        else if (value == "FI") token = Token(FI, true, value);
-        else if (value == "WHILE") token = Token(WHILE, true, value);
-        else if (value == "DO") token = Token(DO, true, value);
-        else if (value == "DONE") token = Token(DONE, true, value);
-        else if (value == "VAR") token = Token(VAR, true, value);
-        else token = Token(IDENTIFIER, true, value);
+    if (type == TokenType::IDENTIFIER){
+        if (value == "FUNC") token = Token(TokenType::FUNC, true, value);
+        else if (value == "PRINT") token = Token(TokenType::PRINT, true, value);
+        else if (value == "RETURN") token = Token(TokenType::RETURN, true, value);
+        else if (value == "CONTINUE") token = Token(TokenType::CONTINUE, true, value);
+        else if (value == "IF") token = Token(TokenType::IF, true, value);
+        else if (value == "THEN") token = Token(TokenType::THEN, true, value);
+        else if (value == "ELSE") token = Token(TokenType::ELSE, true, value);
+        else if (value == "FI") token = Token(TokenType::FI, true, value);
+        else if (value == "WHILE") token = Token(TokenType::WHILE, true, value);
+        else if (value == "DO") token = Token(TokenType::DO, true, value);
+        else if (value == "DONE") token = Token(TokenType::DONE, true, value);
+        else if (value == "VAR") token = Token(TokenType::VAR, true, value);
+        else token = Token(TokenType::IDENTIFIER, true, value);
 
     }
-    else if (type == OPERATOR) {
-        if (value == "+") token = Token(PLUS, true, value);
-        else if (value == "-") token = Token(MINUS, true, value);
-        else if (value == "*") token = Token(MULTIPLY, true, value);
-        else if (value == "/") token = Token(DIVIDE, true, value);
+    else if (type == TokenType::OPERATOR) {
+        if (value == "+") token = Token(TokenType::PLUS, true, value);
+        else if (value == "-") token = Token(TokenType::MINUS, true, value);
+        else if (value == "*") token = Token(TokenType::MULTIPLY, true, value);
+        else if (value == "/") token = Token(TokenType::DIVIDE, true, value);
         else _raiseScanError("Invalid operator type \"" + value + "\"");
 
     }
-    else if (type == SEPARATOR) {
-        if (value == "{") token = Token(L_CURLY_BRACE, true, value);
-        else if (value == "}") token = Token(R_CURLY_BRACE, true, value);
-        else if (value == "(") token = Token(L_BRACKET, true, value);
-        else if (value == ")") token = Token(R_BRACKET, true, value);
-        else if (value == ",") token = Token(COMMA, true, value);
+    else if (type == TokenType::SEPARATOR) {
+        if (value == "{") token = Token(TokenType::L_CURLY_BRACE, true, value);
+        else if (value == "}") token = Token(TokenType::R_CURLY_BRACE, true, value);
+        else if (value == "(") token = Token(TokenType::L_BRACKET, true, value);
+        else if (value == ")") token = Token(TokenType::R_BRACKET, true, value);
+        else if (value == ",") token = Token(TokenType::COMMA, true, value);
         else _raiseScanError("Invalid separator type \"" + value + "\"");
     }
-    else if (type == TEXT) {
-        token = Token(TEXT, false, value);
+    else if (type == TokenType::TEXT) {
+        token = Token(TokenType::TEXT, true, value);
     }
     else{
         token = Token(type, isGrammatical, value);
     }
     if (value == "\n") {
-        token.line = source_code->line_num - 1;
-        token.column = source_code->getLine(token.line).size();
+        token.line = source_code.line_num - 1;
+        token.column = source_code.getLine(token.line).size();
     }else{
-        token.line = source_code->line_num;
-        token.column = source_code->column - value.size();
+        token.line = source_code.line_num;
+        token.column = source_code.column - value.size();
     }
     token_list.push_back(token);
     initState();  //  go to start state
@@ -119,11 +121,11 @@ void Scanner::_scan(){
     initState();
 
     // there are only switchState() || addToken() before line 'break;'
-    while (!source_code->isEOF()){
+    while (!source_code.isEOF()){
         switch (state){
             case 's':
                 // recognize
-                present_char = source_code->getNextChar();
+                present_char = source_code.getNextChar();
                 if (isalpha(present_char)){
                     switchState('a');
                     char_stack += present_char;
@@ -168,15 +170,15 @@ void Scanner::_scan(){
                 break;
             case 'a':
                 // outlook -- no stack push op!
-                if (isDelimiter(source_code->lookNextChar())
-                || isSeparator(source_code->lookNextChar())
-                || isOperator(source_code->lookNextChar())
-                || isColon(source_code->lookNextChar())){
+                if (isDelimiter(source_code.lookNextChar())
+                || isSeparator(source_code.lookNextChar())
+                || isOperator(source_code.lookNextChar())
+                || isColon(source_code.lookNextChar())){
                     switchState('b');  // state b
                     break;
                 }
                 // recognize
-                present_char = source_code->getNextChar();
+                present_char = source_code.getNextChar();
                 if (isDigit(present_char) || isalpha(present_char)){
                     switchState('a');
                     char_stack += present_char;
@@ -186,25 +188,25 @@ void Scanner::_scan(){
                 _raiseScanError("Unexpected token");
                 break;
             case 'b':  // accepted state, add token to list and clear stack
-                addToken(IDENTIFIER, true);
+                addToken(TokenType::IDENTIFIER, true);
                 break;
             case 'c':
-                addToken(DELIMITER, false);
+                addToken(TokenType::DELIMITER, false);
                 break;
             case 'd':
-                addToken(SEPARATOR, true);
+                addToken(TokenType::SEPARATOR, true);
                 break;
             case 'e':
-                addToken(OPERATOR, true);
+                addToken(TokenType::OPERATOR, true);
                 break;
             case 'f':
                 // outlook
-                if (!isSlash(source_code->lookNextChar())){
+                if (!isSlash(source_code.lookNextChar())){
                     switchState('e');
                     break;
                 }
                 // recognize
-                present_char = source_code->getNextChar();
+                present_char = source_code.getNextChar();
                 if (isSlash(present_char)){
                     switchState('g');
                     char_stack += present_char;
@@ -212,8 +214,8 @@ void Scanner::_scan(){
                 }
             case 'g':
                 // outlook
-                if (!isLineBreak(source_code->lookNextChar())){
-                    present_char = source_code->getNextChar();
+                if (!isLineBreak(source_code.lookNextChar())){
+                    present_char = source_code.getNextChar();
                     switchState('g');
                     char_stack += present_char;
                     break;
@@ -223,19 +225,19 @@ void Scanner::_scan(){
                     break;
                 }
             case 'h':
-                addToken(COMMENT, false);
+                addToken(TokenType::COMMENT, false);
                 break;
             case 'i':
                 // outlook
-                if (isSeparator(source_code->lookNextChar())
-                || isDelimiter(source_code->lookNextChar())
-                || isOperator(source_code->lookNextChar())
-                || isColon(source_code->lookNextChar())){
+                if (isSeparator(source_code.lookNextChar())
+                || isDelimiter(source_code.lookNextChar())
+                || isOperator(source_code.lookNextChar())
+                || isColon(source_code.lookNextChar())){
                     switchState('j');
                     break;
                 }
                 // recognize
-                present_char = source_code->getNextChar();
+                present_char = source_code.getNextChar();
                 if (isDigit(present_char)){
                     switchState('i');
                     char_stack += present_char;
@@ -244,11 +246,11 @@ void Scanner::_scan(){
                 _raiseScanError("Unexpected token");
                 break;
             case 'j':
-                addToken(INTEGER, true);
+                addToken(TokenType::INTEGER, true);
                 break;
             case 'k':
                 // outlook
-                present_char = source_code->getNextChar();
+                present_char = source_code.getNextChar();
                 if (!isQuotationMark(present_char)){
                     switchState('k');
                     char_stack += present_char;
@@ -259,11 +261,11 @@ void Scanner::_scan(){
                     break;
                 }
             case 'l':
-                addToken(TEXT, true);
+                addToken(TokenType::TEXT, true);
                 break;
             case 'm':
-                if (isEqualSign(source_code->lookNextChar())){
-                    present_char = source_code->getNextChar();
+                if (isEqualSign(source_code.lookNextChar())){
+                    present_char = source_code.getNextChar();
                     switchState('n');
                     char_stack += present_char;
                     break;
@@ -271,7 +273,7 @@ void Scanner::_scan(){
                 _raiseScanError("Unexpected token");
                 break;
             case 'n':
-                addToken(ASSIGN, true);
+                addToken(TokenType::ASSIGN, true);
                 break;
             default:
                 _raiseFatalError("Scanner reached an invalid state");
@@ -280,9 +282,9 @@ void Scanner::_scan(){
 }
 
 void Scanner:: _raiseScanError(string reason) {
-    cerr<<"ERROR: Lexical Error: "<<reason<<" at line "<<source_code->line_num<<" column "<<source_code->column - char_stack.size()<<"."<<endl;
-    cerr<<source_code->getLine(source_code->line_num);
-    for (int i = 0; i < source_code->column - char_stack.size(); i++) cerr<<' ';
+    cerr<<"ERROR: Lexical Error: "<<reason<<" at line "<<source_code.line_num<<" column "<<source_code.column - char_stack.size()<<"."<<endl;
+    cerr<<source_code.getLine(source_code.line_num);
+    for (int i = 0; i < source_code.column - char_stack.size(); i++) cerr<<' ';
     if (!char_stack.empty()) for (int i = 0; i < char_stack.size(); i++) cerr<<'~';
     cerr<<'^'<<endl;
     cerr<<"Present DFA-Ext(1) information:"<<endl;
@@ -312,9 +314,9 @@ void Scanner::_displayResult() {
          << setw(20) << "Value"
          << resetiosflags(ios::left) << endl;
     cout << "------------------------------------" << endl;
-    for (const auto &token : token_list) {
+    for (auto &token : token_list) {
         string display_value;
-        if (token.type == DELIMITER){
+        if (token.type == TokenType::DELIMITER){
             switch (token.value.c_str()[0]){
                 case '\t':
                     display_value = "\\t";
@@ -338,7 +340,7 @@ void Scanner::_displayResult() {
         cout<< setiosflags(ios::left)
             << setw(7) <<token.line
             << setw(7) <<token.column
-            << setw(14) <<TokenTypeName[token.type]
+            << setw(14) <<token.getDisplay()
             << setw(20) <<display_value
             << resetiosflags(ios::left) <<endl;
     }
@@ -353,6 +355,6 @@ vector<Token> Scanner::scan(bool verboseMode) {
     return token_list;
 }
 
-Scanner::Scanner(SourceCodeReader* reader) {
-    this->source_code = reader;
+Scanner::Scanner(SourceCodeReader reader) {
+    this->source_code = std::move(reader);
 }
