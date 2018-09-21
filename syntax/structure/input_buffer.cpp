@@ -4,14 +4,14 @@
 
 #include "input_buffer.h"
 
-InputBuffer::InputBuffer(vector<Symbol>* symbols) {
-    if (symbols->empty()){
+InputBuffer::InputBuffer(vector<Symbol> symbols) {
+    if (symbols.empty()){
         cerr<<"ERROR: Parser Error: No tokens found"<<endl;
         exit(-1);
     }
-    this->symbols = *symbols;
+    this->symbols = symbols;
     this->index = 0;
-    this->len = symbols->size();
+    this->len = symbols.size();
 }
 
 Symbol InputBuffer::present() {

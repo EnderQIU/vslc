@@ -18,7 +18,8 @@ private:
     unsigned long index = 0;
     unsigned long len = 0;
 public:
-    explicit InputBuffer(vector<Symbol>* symbols);
+    InputBuffer() = default;
+    explicit InputBuffer(vector<Symbol> symbols);
     Symbol present();
     void next();
     bool is$();  // end of input

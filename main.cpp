@@ -33,22 +33,21 @@ int main(int argc, char* argv[]) {
     } else inputFileName = cmdParser.rest()[0];
 
     // Read source code file
-    SourceCodeReader* reader = new SourceCodeReader(inputFileName);
+    SourceCodeReader reader = SourceCodeReader(inputFileName);
 
     // Lexical analysis
-    auto *scanner = new Scanner(reader);
-    vector<Token*> scanner_result = scanner->scan(verboseMode);
+    Scanner scanner = Scanner(reader);
+    vector<Token> scanner_result = scanner.scan(verboseMode);
 
     // Clear non-grammatical tokens & initialize the input buffer
-    auto * symbols = new vector<Symbol>();
-    for (Token *i : scanner_result) if (i->isGrammatical) symbols->push_back(Symbol(i));
-    symbols->push_back(Symbol(SymbolType::DOLLAR));  // input buffer symbols --  end with $
-    auto * inputBuffer = new InputBuffer(symbols);
-    delete scanner;  // free scanner, useless afterwards
+    vector<Symbol> symbols = vector<Symbol>();
+    for (Token i : scanner_result) if (i.isGrammatical) symbols.emplace_back(i);
+    symbols.emplace_back(SymbolType::HASHTAG);  // input buffer symbols --  end with $
+    InputBuffer inputBuffer = InputBuffer(symbols);
 
     // syntax analysis
-    auto * parser  = new Parser(inputBuffer);
-    AST* rootNode = parser->parse(verboseMode);
+    Parser parser  = Parser(inputBuffer, reader);
+    AST rootNode = parser.parse(verboseMode);
 
     return 0;
 }

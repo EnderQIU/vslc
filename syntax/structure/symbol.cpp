@@ -4,8 +4,8 @@
 
 #include "symbol.h"
 
-Symbol::Symbol(Token* token) {
-    switch (token->type){
+Symbol::Symbol(Token token) {
+    switch (token.type){
         case TokenType::IDENTIFIER:
             this->type = SymbolType::IDENTIFIER;
             break;
@@ -85,9 +85,9 @@ Symbol::Symbol(Token* token) {
             cerr<<"FATAL ERROR: Error: No such token"<<endl;
             exit(-1);
     }
-    this->value = token->value;
-    this->line = token->line;
-    this->column = token->column;
+    this->value = token.value;
+    this->line = token.line;
+    this->column = token.column;
     this->isToken = true;
 }
 
@@ -302,5 +302,62 @@ bool Symbol::isTerminal() {
         default:
             // else are terminals
             return true;
+    }
+}
+
+string Symbol::getTypeName() {
+    switch (this->type) {
+        case SymbolType::IDENTIFIER:
+            return "IDENTIFIER";
+        case SymbolType::FUNC:
+            return "FUNC";
+        case SymbolType::PRINT:
+            return "PRINT";
+        case SymbolType::RETURN:
+            return "RETURN";
+        case SymbolType::CONTINUE:
+            return "CONTINUE";
+        case SymbolType::IF:
+            return "IF";
+        case SymbolType::THEN:
+            return "THEN";
+        case SymbolType::ELSE:
+            return "ELSE";
+        case SymbolType::FI:
+            return "FI";
+        case SymbolType::WHILE:
+            return "WHILE";
+        case SymbolType::DO:
+            return "DO";
+        case SymbolType::DONE:
+            return "DONE";
+        case SymbolType::VAR:
+            return "VAR";
+        case SymbolType::ASSIGN:
+            return "ASSIGN";
+        case SymbolType::PLUS:
+            return "PLUS";
+        case SymbolType::MINUS:
+            return "MINUS";
+        case SymbolType::MULTIPLY:
+            return "MULTIPLY";
+        case SymbolType::DIVIDE:
+            return "DIVIDE";
+        case SymbolType::L_CURLY_BRACE:
+            return "L_CURLY_BRACE";
+        case SymbolType::R_CURLY_BRACE:
+            return "R_CURLY_BRACE";
+        case SymbolType::L_BRACKET:
+            return "L_BRACKET";
+        case SymbolType::R_BRACKET:
+            return "R_BRACKET";
+        case SymbolType::COMMA:
+            return "COMMA";
+        case SymbolType::INTEGER:
+            return "INTEGER";
+        case SymbolType::TEXT:
+            return "TEXT";
+        default:
+            return getDisplay();
     }
 }

@@ -1,6 +1,7 @@
 import collections
 from constants import SymbolType
 
+
 class SelectSet:
 
     def __init__(self, line):
@@ -75,7 +76,7 @@ if __name__ == '__main__':
             for s in parsing_table[n][t]:
                 right_symbol += ", "+s
             expression = "TABLE_CELL_MACRO_{num}({line}, {column}, {left_symbol} {right_symbol});".format(
-                num=len(parsing_table[n][t]),line=n,column=t,left_symbol=n,right_symbol=right_symbol)
+                num=len(parsing_table[n][t]), line=n, column=t, left_symbol=n, right_symbol=right_symbol)
             expressions.append(expression)
     with open('expressions.txt', 'w') as f:
         for expression in expressions:

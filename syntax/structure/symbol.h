@@ -93,15 +93,17 @@ enum class SymbolType {
 
 class Symbol {
 public:
-    SymbolType type;
+    SymbolType type = SymbolType::S;
     string value = "";
     bool isToken = false;
-    unsigned long line;
-    unsigned long column;
+    unsigned long line = 0;
+    unsigned long column = 0;
 
-    explicit Symbol(Token *token);  // Use Token to initialize a symbol
+    Symbol() = default;
+    explicit Symbol(Token token);  // Use Token to initialize a symbol
     explicit Symbol(SymbolType type);  // Initialize non-terminators and some special symbol, the line and column can be set later.
     string getDisplay();
+    string getTypeName();
     bool isTerminal();
 };
 

@@ -1,12 +1,12 @@
 FUNC main()
 {
     // This is a comment
-	VAR i
+	VAR i  // declaration must be ahead of statement
+	VAR a, b, c  // You can declare more than one variable in a declaration
 	i := 0
-	VAR a, b, c
 	a := 8
 	b := 2
-	c := a / b
+	c := a / b  // only support integer division
     WHILE 11 - i
 	DO
 	{

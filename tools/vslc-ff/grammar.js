@@ -11,7 +11,7 @@ const productions = [
     },
     {
         left: "A'",
-        right: ["b", "A'"]
+        right: ["B", "A'"]
     },
     {
         left: "A'",
@@ -71,7 +71,7 @@ const productions = [
     },
     {
         left: "F",
-        right: ["b", "c", "L"]
+        right: ["b", "c", "M"]
     },
     {
         left: "M",
@@ -187,7 +187,7 @@ const productions = [
     },
     {
         left: "J'",
-        right: ["l", "D", "K"]
+        right: ["l", "D", "k"]
     },
     {
         left: "K",

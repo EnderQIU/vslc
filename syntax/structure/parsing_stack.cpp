@@ -6,6 +6,10 @@
 
 
 Symbol ParsingStack::top() {
+    if (symbols.empty()) {
+        cerr<<"FATAL ERROR: Parser Error: Call top() when parsing stack is empty"<<endl;
+        exit(-1);
+    }
     return symbols.top();
 }
 

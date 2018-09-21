@@ -18,11 +18,11 @@ using namespace std;
 
 class Scanner {
 private:
-    vector<Token*> token_list;  // result of lexical analysis
+    vector<Token> token_list;  // result of lexical analysis
     char state;  // state of DFA
     string char_stack;
     char present_char;
-    SourceCodeReader* source_code;
+    SourceCodeReader source_code;
 
     bool isDelimiter(char c);
     bool isSeparator(char c);
@@ -41,8 +41,8 @@ private:
     void _raiseScanError(string reason);
     void _raiseFatalError(string reason);
 public:
-    explicit Scanner(SourceCodeReader* reader);
-    vector<Token*> scan(bool verboseMode);
+    explicit Scanner(SourceCodeReader reader);
+    vector<Token> scan(bool verboseMode);
 };
 
 

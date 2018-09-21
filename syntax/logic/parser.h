@@ -10,23 +10,27 @@
 #include "../structure/parsing_stack.h"
 #include "../structure/production.h"
 #include "../structure/parsing_table.h"
+#include "../../utils/source_code_reader.h"
 
 #include <algorithm>
 
 class Parser {
 private:
-    InputBuffer* inputBuffer;
-    ParsingStack* parsingStack;
+    InputBuffer inputBuffer;
+    ParsingStack parsingStack;
     vector<Production> productions;
     ParsingTable parsingTable;
+    Symbol ip;
+    Symbol X;
+    SourceCodeReader sourceCodeReader;
 
-    void _raiseError();
-    void _raiseErrorEntry();
-    AST* _parse();
+    void _raiseError(Symbol s);
+    void _raiseErrorEntry(Symbol X, Symbol ip);
+    AST _parse();
     void _dispalyResult();
 public:
-    explicit Parser(InputBuffer* inputBuffer);
-    AST* parse(bool verboseMode);
+    explicit Parser(InputBuffer inputBuffer, SourceCodeReader sourceCodeReader);
+    AST parse(bool verboseMode);
 };
 
 

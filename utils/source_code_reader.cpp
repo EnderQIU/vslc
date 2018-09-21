@@ -51,7 +51,7 @@ bool SourceCodeReader::isEOF() {
 }
 
 string SourceCodeReader::getLine(unsigned long line_num) {
-    return this->line.at(line_num - 1);
+    return this->line.at(line_num - 1).erase(this->line.at(line_num - 1).size()-1, 1);
 }
 
 char SourceCodeReader::lookNextChar() {

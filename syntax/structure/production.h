@@ -16,6 +16,7 @@ public:
     Symbol left = Symbol(SymbolType::EPSILON);  // left part of a production -- a non-terminator
     vector<Symbol> right;  // right part of a production -- a bunch of terminators
     Production(Symbol left, vector<Symbol> right);
+    Production() = default;
 
     void display();
 };
