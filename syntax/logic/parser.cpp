@@ -15,17 +15,14 @@ AST Parser::_parse() {
 				parsingStack.pop();
 				inputBuffer.next();
 			}
-			else
-			{
+			else{
 				_raiseError(X);
 			}
 		}
-		else if (parsingTable.isErrorEntry(X.type, ip.type))
-		{
+		else if (parsingTable.isErrorEntry(X.type, ip.type)){
 			_raiseErrorEntry(X, ip);
 		}
-		else
-		{
+		else{
 			Production p = parsingTable.getEntry(X.type, ip.type);
 			productions.push_back(p);
 			parsingStack.pop();
