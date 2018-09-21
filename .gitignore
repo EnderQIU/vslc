@@ -128,5 +128,9 @@ tools/vslc-ff/package-lock.json
 # vslf-pt venv
 tools/vslc-pt/venv/
 
+# pycache
+tools/vslc-tc/__pycache__/
+tools/vslc-pt/__pycache__/
+
 # git_stats
 git_stats/
