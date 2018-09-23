@@ -23,6 +23,7 @@ private:
     Symbol ip;
     Symbol X;
     SourceCodeReader sourceCodeReader;
+    AST tree;
 
     void _raiseError(Symbol s);
     void _raiseErrorEntry(Symbol X, Symbol ip);
