@@ -9,35 +9,35 @@
 AST Parser::_parse() {
     ip = inputBuffer.present();
     X = parsingStack.top();
-    while(ip.type != SymbolType::HASHTAG){
-		if (X.isTerminal()) {
-			if (X.type == ip.type) {
-				parsingStack.pop();
-				inputBuffer.next();
-			}
-			else
-			{
-				_raiseError(X);
-			}
-		}
-		else if (parsingTable.isErrorEntry(X.type, ip.type))
-		{
-			_raiseErrorEntry(X, ip);
-		}
-		else
-		{
-			Production p = parsingTable.getEntry(X.type, ip.type);
-			productions.push_back(p);
-			parsingStack.pop();
-			// reverse iterator
-			reverse(p.right.begin(), p.right.end());
-			for (auto &it : p.right) if (it.type != SymbolType::EPSILON) parsingStack.push(it);
-		}
-
+    
+    while(X.type != SymbolType::HASHTAG){
+        if (X.isTerminal()) {
+            if (X.type == ip.type) {
+                parsingStack.pop();
+                inputBuffer.next();
+            }
+            else{
+                _raiseError(X);
+            }
+        }else if (parsingTable.isErrorEntry(X.type, ip.type)){
+            _raiseErrorEntry(X, ip);
+        }else{
+            Production p = parsingTable.getEntry(X.type, ip.type);
+            productions.push_back(p);
+            parsingStack.pop();
+            AST* temp = this->tree.getLowerLeftNode();
+            for (int i = 0; i < p.right.size();i++) {
+                temp->addChild(new AST(Symbol(p.right.at(i).type)));
+            }
+            // reverse iterator
+            reverse(p.right.begin(), p.right.end());
+            for (auto &it : p.right) if (it.type != SymbolType::EPSILON) parsingStack.push(it);
+        }
+        
         ip = inputBuffer.present();
         X = parsingStack.top();
     }
-    return AST();
+    return this->tree;
 }
 
 void Parser::_raiseError(Symbol x) {
@@ -101,6 +101,7 @@ Parser::Parser(InputBuffer inputBuffer, SourceCodeReader sourceCodeReader) {
     this->parsingStack.push(Symbol(SymbolType::S));
     this->parsingTable = ParsingTable();
     this->sourceCodeReader = sourceCodeReader;
+    this->tree = AST(Symbol(SymbolType::S));
 }
 
 AST Parser::parse(bool verboseMode) {
