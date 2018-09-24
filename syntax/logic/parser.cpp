@@ -14,6 +14,7 @@ AST Parser::_parse() {
         if (X.isTerminal()) {
             if (X.type == ip.type) {
                 parsingStack.pop();
+                this->tree.getLowerLeftTNode()->setSymbol(ip);
                 inputBuffer.next();
             }
             else{
@@ -25,9 +26,10 @@ AST Parser::_parse() {
             Production p = parsingTable.getEntry(X.type, ip.type);
             productions.push_back(p);
             parsingStack.pop();
-            AST* temp = this->tree.getLowerLeftNode();
+            AST* temp = this->tree.getLowerLeftNTNode();
             for (int i = 0; i < p.right.size();i++) {
-                temp->addChild(new AST(Symbol(p.right.at(i).type)));
+                AST* newAST = new AST(Symbol(p.right.at(i).type));
+                temp->addChild(newAST);
             }
             // reverse iterator
             reverse(p.right.begin(), p.right.end());
@@ -36,7 +38,7 @@ AST Parser::_parse() {
         
         ip = inputBuffer.present();
         X = parsingStack.top();
-    }
+    }  
     return this->tree;
 }
 
