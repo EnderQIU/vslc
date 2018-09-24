@@ -1,0 +1,5 @@
+FUNC main()
+{
+	VAR i
+	i := 0
+}
