@@ -2,17 +2,17 @@
 
 ## VSL lexer definition
 
-| Token | Definition（Regular Expression）                                           |
-| ------------| ------------------------------------------------------------------   |
-| identifier  | `[(FUNC)|(PRINT)|RETURN|CONTINUE|IF|THEN|ELSE|FI|WHILE|DO|DONE|VAR]` |
-| assigner    | `:=`                                                                 |
-| operator    | `[+-*]`                                                              |
-| delimiter   | `[\{\}\(\) \t\n]`                                                    |
-| separator   | `[{}(),]`                                                            |
-| comment       | `"//".*`                                                           |
-| variable      | `[A-Za-z]([A-Za-z]|[0-9])*`                                        |
-| text          | `\”[A-Za-z0-9/w]*\”`                                               |
-| integer       | `[1-9][0-9]*`                                                      |
+| Token | Definition（Regular Expression）                                            |
+| ------------ | ------------------------------------------------------------------   |
+| identifier   | `[(FUNC)|(PRINT)|RETURN|CONTINUE|IF|THEN|ELSE|FI|WHILE|DO|DONE|VAR]` |
+| assigner     | `:=`                                                                 |
+| operator     | `[+-*]`                                                              |
+| delimiter    | `[\{\}\(\) \t\n]`                                                    |
+| separator    | `[{}(),]`                                                            |
+| comment      | `"//".*`                                                             |
+| variable     | `[A-Za-z]([A-Za-z]|[0-9])*`                                          |
+| text         | `\”[A-Za-z0-9/w]*\”`                                                 |
+| integer      | `[1-9][0-9]*`                                                        |
 
 ## System design
 
