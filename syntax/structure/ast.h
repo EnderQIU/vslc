@@ -16,6 +16,7 @@ private:
     Symbol symbol = Symbol(SymbolType::EPSILON);
     AST* parent = nullptr;
     AST* copy(AST*);
+    void print(vector<AST*> nodes, string prefix);
 public:
     vector<AST*> children;
     AST(Symbol symbol);
@@ -30,6 +31,7 @@ public:
     AST() {};
     void setParent(AST* parent);
     AST* copy();
+    void print();
 };
 
 #endif //VSLC_AST_H

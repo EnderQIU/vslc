@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "utils/cmdline.h"
-#include "utils/printAST.h"
 #include "lexical/logic/scanner.h"
 #include "syntax/structure/input_buffer.h"
 #include "syntax/logic/parser.h"
@@ -50,8 +49,9 @@ int main(int argc, char* argv[]) {
     // syntax analysis
     Parser parser = Parser(inputBuffer, reader);
     AST rootNode = parser.parse(verboseMode);
-    cout << "AST Tree" << endl;
-    printAST(rootNode);
-
+    if (verboseMode) {
+        rootNode.print();
+    }
+    
     return 0;
 }
