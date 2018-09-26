@@ -1,4 +1,4 @@
-#include "ast.h"
+ï»¿#include "ast.h"
 
 void AST::addChild(AST* child) {
     this->children.push_back(child);
@@ -68,10 +68,10 @@ AST* AST::copy(AST* parent) {
     return newTree;
 }
 
-string PREFIX_BRANCH = "©À©¤";//Ê÷Ö¦
-string PREFIX_TRUNK = "©¦ ";//Ê÷¸É
-string PREFIX_LEAF = "©¸©¤";//Ò¶×Ó
-string PREFIX_EMP = "  ";//¿Õ
+string PREFIX_BRANCH = "â”œâ”€";//æ ‘æ
+string PREFIX_TRUNK = "â”‚ ";//æ ‘å¹²
+string PREFIX_LEAF = "â””â”€";//å¶å­
+string PREFIX_EMP = "  ";//ç©º
 
 string&   replace_all_distinct(string& str, const string& old_value, const string& new_value) {
     for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
