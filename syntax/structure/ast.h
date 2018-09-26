@@ -22,6 +22,7 @@ public:
     bool isLeaf() { return children.empty(); }
     bool isRoot() { return parent == nullptr; }
     AST* getParent() { return parent; }
+    Symbol getSymbol() { return symbol; }
     AST* getLowerLeftNTNode();    // find the non-terminal node which is in the top of parsing stack
     AST* getLowerLeftTNode();   // find the terminal node which is in the top of inputbuffer
     void addChild(AST* child);
