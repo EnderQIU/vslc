@@ -52,6 +52,6 @@ int main(int argc, char* argv[]) {
     AST rootNode = parser.parse(verboseMode);
     cout << "AST Tree" << endl;
     printAST(rootNode);
-
+    system("pause");
     return 0;
 }
