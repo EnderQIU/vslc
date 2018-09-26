@@ -129,12 +129,12 @@ of 《Compilers - Principles, Techniques, &Tools》, ε means empty.
 + Productions
 ```
 S -> A
-A -> B | Ab
+A -> B | AB
 B -> ab(C)D
 C -> E | ε
 E -> b | E,b
 D -> F | G | H | I | J | K | L
-F -> bcL
+F -> bcM
 M -> M+M | M-M | M*M | M/M | -M | (M) | d | b | b(N)
 N -> ε | O
 O -> M | O,M
@@ -165,10 +165,10 @@ W -> (M) | d | b | b(N)
 ```
 
 2. Elimination of Left Recursion
-- `A -> B | Ab`
+- `A -> B | AB`
 ```production
 A  -> BA'
-A' -> bA' | ε
+A' -> BA' | ε
 ```
 
 - `E -> b | E,b`
@@ -218,8 +218,8 @@ V' -> *WV' | /WV' | ε
 
 - `J -> iMjDk | iMjDlDk`
 ```production
-J  -> J'
-J' -> iMjD | iMjDlDk
+J  -> iMjDJ'
+J' -> k | lDk
 ```
 
 - `W -> (M) | d | b | b(N)`
@@ -228,20 +228,58 @@ W  -> (M) | d | bW'
 W' -> (N) | ε
 ```
 
-4. FIRST & FOLLOW sets
+4. Algorithm Model: Table-driven Predictive Parser
+```ascii
+             +-------------+
+Input Buffer:|a|b|(|)|{|}|#|
+             ++------------+
+              ^
+              |
+Parsing+-+   ++------------+           +--------------------+
+Stack: | +<--+             +--> Output:|class AST           |
+       | |   |   Predict   |           +--------------------+
+       |S|   |   Parsing   |           |ASTTYPE:type        |
+       +-+   |   Program   |           |Vector<AST>:children|
+       |#|   |             |           |Token?:token        |
+       +-+   ++------------+           +--------------------+
+              |
+              v
+             ++------------+
+             |   Parsing   |
+             |    Table    |
+             +-------------+
+
+```
+
+So at first, we need to do the following preparation stuff:
+- Implement the abstract input buffer, parsing stack and parsing table into cpp classes. See code in [parser/structure/](https://github.com/EnderQIU/vslc/parser/structure/)
+- Calculate FIRST & FOLLOW sets.
+- Generate Parsing Table.
+- Import the calculated parsing table into cpp `ParsingTable` class's constructor.
+
+5. Calculate FIRST & FOLLOW sets
 We use first-follow package to generate FIRST & FOLLOW. Tools are stored in tools/vslc-ff/.
+
+- Usage Instruction
+```bash
+cd tools/vslc-ff/
+npm install
+node grammar.js > result.txt
+```
+- Result
+See results in [select.txt](https://github.com/EnderQIU/vslc/blob/master/tools/vslc-ff/select.txt)
 
 - Final grammar
 ```production
 S -> A
 A  -> BA'
-A' -> bA' | ε
+A' -> BA' | ε
 B -> ab(C)D
 C -> E | ε
 E  -> bE'
 E' -> ,bE' | ε
 D -> F | G | H | I | J | K | L
-F -> bcL
+F -> bcM
 M  -> VM'
 M' -> +VM' | -VM' | ε
 V  -> WV'
@@ -268,67 +306,79 @@ T  -> DT'
 T' -> DT' | ε
 ```
 
-- Instruction
-```bash
-cd tools/vslc-ff/
-npm install
-node grammar.js
+6. Generate Parsing Table
+We generated the parsing table following the algorithm on the book, which implements in Python. See code in 
+[vslc-pt.py](https://github.com/EnderQIU/vslc/blob/master/tools/vslc-pt/vslc-pt.py)
+
+- Usage Instruction
+```sh
+cd tools/vslc-pt/
+virtualenv venv -p python3
+source ./venv/bin/activate
+pip install -r requirements.pip
+python vslc-pt.py > result.txt
 ```
 
-5. Calculate SELECT Set
+- Result
+# Parsing Table
+|   |     (     |    )    |     *      |     +      |     ,      |     -      |     /      |      a      |     b     |    d     |     e     |    f     |     g     |     h     |      i      |    j    |    k    |     l     |     m      |    n    |    o    |     p     |     {     |    }    |    #    |
+|---|-----------|---------|------------|------------|------------|------------|------------|-------------|-----------|----------|-----------|----------|-----------|-----------|-------------|---------|---------|-----------|------------|---------|---------|-----------|-----------|---------|---------|
+|A  |           |         |            |            |            |            |            | A -> BA'    |           |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|A' |           |         |            |            |            |            |            | A' -> BA'   |           |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         | A' -> ε |
+|B  |           |         |            |            |            |            |            | B -> ab(C)D |           |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|C  |           | C -> ε  |            |            |            |            |            |             | C -> E    |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|D  |           |         |            |            |            |            |            |             | D -> F    |          | D -> H    |          | D -> G    | D -> I    | D -> J      |         |         |           | D -> K     |         |         |           | D -> L    |         |         |
+|E  |           |         |            |            |            |            |            |             | E -> bE'  |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|E' |           | E' -> ε |            |            | E' -> ,bE' |            |            |             | E' -> ε   |          | E' -> ε   |          | E' -> ε   | E' -> ε   | E' -> ε     |         |         |           | E' -> ε    |         |         | E' -> ε   | E' -> ε   |         |         |
+|F  |           |         |            |            |            |            |            |             | F -> bcM  |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|G  |           |         |            |            |            |            |            |             |           |          |           |          | G -> gM   |           |             |         |         |           |            |         |         |           |           |         |         |
+|H  |           |         |            |            |            |            |            |             |           |          | H -> eP   |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|I  |           |         |            |            |            |            |            |             |           |          |           |          |           | I -> h    |             |         |         |           |            |         |         |           |           |         |         |
+|J  |           |         |            |            |            |            |            |             |           |          |           |          |           |           | J -> iMjDJ' |         |         |           |            |         |         |           |           |         |         |
+|J' |           |         |            |            |            |            |            |             |           |          |           |          |           |           |             |         | J' -> k | J' -> lDk |            |         |         |           |           |         |         |
+|K  |           |         |            |            |            |            |            |             |           |          |           |          |           |           |             |         |         |           | K -> mMnDo |         |         |           |           |         |         |
+|L  |           |         |            |            |            |            |            |             |           |          |           |          |           |           |             |         |         |           |            |         |         |           | L -> {RT} |         |         |
+|M  | M -> VM'  |         |            |            |            |            |            |             | M -> VM'  | M -> VM' |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|M' |           | M' -> ε |            | M' -> +VM' | M' -> ε    | M' -> -VM' |            | M' -> ε     | M' -> ε   |          | M' -> ε   |          | M' -> ε   | M' -> ε   | M' -> ε     | M' -> ε | M' -> ε | M' -> ε   | M' -> ε    | M' -> ε | M' -> ε |           | M' -> ε   | M' -> ε | M' -> ε |
+|N  | N -> O    | N -> ε  |            |            |            |            |            |             | N -> O    | N -> O   |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|O  | O -> MO'  |         |            |            |            |            |            |             | O -> MO'  | O -> MO' |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|O' |           | O' -> ε |            |            | O' -> ,MO' |            |            |             |           |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|P  | P -> QP'  |         |            |            |            |            |            |             | P -> QP'  | P -> QP' |           | P -> QP' |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|P' |           |         |            |            | P' -> ,QP' |            |            | P' -> ε     | P' -> ε   |          | P' -> ε   |          | P' -> ε   | P' -> ε   | P' -> ε     |         | P' -> ε | P' -> ε   | P' -> ε    |         | P' -> ε |           | P' -> ε   | P' -> ε | P' -> ε |
+|Q  | Q -> M    |         |            |            |            |            |            |             | Q -> M    | Q -> M   |           | Q -> f   |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|R  |           |         |            |            |            |            |            |             | R -> R'   |          | R -> R'   |          | R -> R'   | R -> R'   | R -> R'     |         |         |           | R -> R'    |         |         | R -> R'   | R -> R'   |         |         |
+|R' |           |         |            |            |            |            |            |             | R' -> ε   |          | R' -> ε   |          | R' -> ε   | R' -> ε   | R' -> ε     |         |         |           | R' -> ε    |         |         | R' -> UR' | R' -> ε   |         |         |
+|S  |           |         |            |            |            |            |            | S -> A      |           |          |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|T  |           |         |            |            |            |            |            |             | T -> DT'  |          | T -> DT'  |          | T -> DT'  | T -> DT'  | T -> DT'    |         |         |           | T -> DT'   |         |         |           | T -> DT'  |         |         |
+|T' |           |         |            |            |            |            |            |             | T' -> DT' |          | T' -> DT' |          | T' -> DT' | T' -> DT' | T' -> DT'   |         |         |           | T' -> DT'  |         |         |           | T' -> DT' | T' -> ε |         |
+|U  |           |         |            |            |            |            |            |             |           |          |           |          |           |           |             |         |         |           |            |         |         | U -> pE   |           |         |         |
+|V  | V -> WV'  |         |            |            |            |            |            |             | V -> WV'  | V -> WV' |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|V' |           | V' -> ε | V' -> *WV' | V' -> ε    | V' -> ε    | V' -> ε    | V' -> /WV' | V' -> ε     | V' -> ε   |          | V' -> ε   |          | V' -> ε   | V' -> ε   | V' -> ε     | V' -> ε | V' -> ε | V' -> ε   | V' -> ε    | V' -> ε | V' -> ε |           | V' -> ε   | V' -> ε | V' -> ε |
+|W  | W -> (M)  |         |            |            |            |            |            |             | W -> bW'  | W -> d   |           |          |           |           |             |         |         |           |            |         |         |           |           |         |         |
+|W' | W' -> (N) | W' -> ε | W' -> ε    | W' -> ε    | W' -> ε    | W' -> ε    | W' -> ε    | W' -> ε     | W' -> ε   |          | W' -> ε   |          | W' -> ε   | W' -> ε   | W' -> ε     | W' -> ε | W' -> ε | W' -> ε   | W' -> ε    | W' -> ε | W' -> ε |           | W' -> ε   | W' -> ε | W' -> ε |
 
-6. Define Production Class
-```production
-class Production{
-	Token left;
-	List<Token> right;
+7. Import Parsing Table into Cpp Source Code
+For convenience, we wrote a python script to generate cpp source code which convert parsing table into `ParsingTable` class constructor statement.
+See our code in [vslc-tc.py](https://github.com/EnderQIU/vslc/blob/master/tools/vslc-tc/vslc-tc.py)
+
+8. Complete the logic part -- the Predict Parsing Program
+Fake code from the book:
+```fake code
+set ip to point to the first symbol of w ;
+set X to the top stack symbol;
+while ( X =I=- $ ) { /* stack is not empty */
+    if( X is a ) pop the stack and advance ip;
+    else if ( X is a terminal ) error(O);
+    else if ( M[X, a] is an error entry ) error(O);
+    else if ( M[X, a] = X -> Y1 Y2 ... Yk){
+        forward the ip;
+        output the production X -> Y1 Y2 ... Yk;
+        pop the stack;
+        push Yk, Yk-1, ..., Y1 onto the stack , with Y1 on top;
+    }
+    set X on the top of stack symbol;
 }
-
-//eg.
-//A -> ab
-Token A , a , b;
-Production p = new Production();
-p.left=A;
-p.right.push(a);
-p.right.push(b);
 ```
+See implementation in [parser.cpp](https://github.com/EnderQIU/vslc/blob/master/syntax/logic/parser.cpp), method `_parse()`.
 
-7. Fill In Predicting Analysis Table
-```production
-Token terminal[?];
-Token nonTerminal[?];
-production[terminal.size()][nonTerminal.size()] table;
-
-//eg.
-terminal = {A , B}
-nonTerminal = {a , b , c}
-IF
-SELECT(A -> ab) = {a , c}
-Then 
--------------------------------------------------
-|	  	a    	b    	c    	ε	|
-|  A  		A->ab		A->ab		|
-|  B						|
--------------------------------------------------
-
-Production p;
-table[0][0]=p;
-table[0][2]=p;
-```
-
-8. Define Abstract TreeNode
-```production
-Class TreeNode{
-	Token origin; 
-	List<TreeNode> children;
-	//return the nonTerminal TreeNode in children which has the lowest index
-	public getLeftNonTerminal();
-}
-```
-
-9. Algorithm Graph
-- `see syntax_analysis_algrorithm.jpg`
-
-
-
-
+9. Generate the Abstract Syntax Tree
