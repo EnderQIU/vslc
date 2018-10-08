@@ -23,14 +23,15 @@ int main(int argc, char* argv[]) {
     // setup & check argv
     verboseMode = cmdParser.exist("verbose");
     outputFileName = cmdParser.get<string>("output");
-    if (outputFileName.empty()){
-        cerr<<"Please specify a output file."<<endl<<cmdParser.usage();
+    if (outputFileName.empty()) {
+        cerr << "Please specify a output file." << endl << cmdParser.usage();
         return 0;
     }
-    if (cmdParser.rest().empty()){
-        cerr<<"Please specify a input file."<<endl<<cmdParser.usage();
+    if (cmdParser.rest().empty()) {
+        cerr << "Please specify a input file." << endl << cmdParser.usage();
         return 0;
-    } else inputFileName = cmdParser.rest()[0];
+    }
+    else inputFileName = cmdParser.rest()[0];
 
     // Read source code file
     SourceCodeReader reader = SourceCodeReader(inputFileName);
@@ -46,8 +47,11 @@ int main(int argc, char* argv[]) {
     InputBuffer inputBuffer = InputBuffer(symbols);
 
     // syntax analysis
-    Parser parser  = Parser(inputBuffer, reader);
+    Parser parser = Parser(inputBuffer, reader);
     AST rootNode = parser.parse(verboseMode);
-
+    if (verboseMode) {
+        rootNode.print();
+    }
+    
     return 0;
 }

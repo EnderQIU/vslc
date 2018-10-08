@@ -15,11 +15,23 @@ class AST{
 private:
     Symbol symbol = Symbol(SymbolType::EPSILON);
     AST* parent = nullptr;
-    vector<AST> children;
+    AST* copy(AST*);
+    void print(vector<AST*> nodes, string prefix);
 public:
+    vector<AST*> children;
+    AST(Symbol symbol);
     bool isLeaf() { return children.empty(); }
     bool isRoot() { return parent == nullptr; }
     AST* getParent() { return parent; }
+    Symbol getSymbol() { return symbol; }
+    AST* getLowerLeftNTNode();    // find the non-terminal node which is in the top of parsing stack
+    AST* getLowerLeftTNode();   // find the terminal node which is in the top of inputbuffer
+    void addChild(AST* child);
+    void setSymbol(Symbol symbol);
+    AST() {};
+    void setParent(AST* parent);
+    AST* copy();
+    void print();
 };
 
 #endif //VSLC_AST_H
