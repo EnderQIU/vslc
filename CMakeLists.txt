@@ -48,6 +48,7 @@ set(
     "utils/source_code_reader.cpp"
     "utils/source_code_reader.h"
     "syntax/structure/ast.h"
+    "syntax/structure/ast.cpp"
     "syntax/logic/parser.cpp"
     "syntax/logic/parser.h"
     "syntax/structure/parsing_table.h"
