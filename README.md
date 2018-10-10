@@ -34,7 +34,7 @@ options:
 ```
 
 ## Acknowledgement
-Portion of this software may utilize the following copyrighted materail, the use of which is hereby acknowledged.
+Portion of this software may utilize the following copyrighted materials, the use of which is hereby acknowledged.
 
 - [cmdline: A simple command line parser for C++](https://github.com/tanakh/cmdline) Copyright (c) 2009, Hideyuki Tanaka
 - [first-follow: Calculator for finding first, follow and predict sets for a grammar.](https://github.com/MikeDevice/first-follow) MIT License 
