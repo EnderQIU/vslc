@@ -19,7 +19,7 @@ Some can perform well even use lower version numbers.
 
 2. Build the llvm Visual Studio project with cmake GUI:
 - Set the source code path and build binary path on the top path choosing panels.
-- Add the following two entries, please notify changing the paths on the screenshots to yours:
+- Add the following two entries, please notice changing the paths on the screenshots to yours:
 ![Add Entry 1](docs/img/add_entry_1.png)
 ![Add Entry 2](docs/img/add_entry_2.png)
 - Hit the `Confugure` button to specify the generator for this project as `Visual Studio 15 2017` and choose `Use default native compilers`.
