@@ -3,7 +3,7 @@ A Very Simple Language Compiler.
 
 ## Build Instructions
 The following dependencies are tested successfully but not necessarily required to be the same on your platform.
-Some can perform well even use lower version numbers.
+Some can perform well even use packages with lower version numbers.
 
 ### Build For Windows
 
@@ -15,7 +15,19 @@ Some can perform well even use lower version numbers.
 
 #### Instructions
 
-1. Download the [llvm source code package](http://releases.llvm.org/download.html) in a directory and un-archive it.
+1. Download the [llvm source code package](http://releases.llvm.org/download.html) in a directory and un-archive it
+into a directory named `llvm.src`. Make a directory named `llvm.build` on the same level of `llvm.src`. Then make a
+directory named `install` in the `llvm.src` directory. The result of this step will be like this.
+```cmd.exe
+> DIR
+llvm.build <DIR> XX-XX-XX XX:XX
+llvm.src   <DIR> XX-XX-XX XX:XX
+...
+> CD llvm.build\
+> DIR
+install    <DIR> XX-XX-XX XX:XX
+...
+```
 
 2. Build the llvm Visual Studio project with cmake GUI:
 - Set the `source code path` and `build binary path` on the top path choosing panels.
@@ -31,15 +43,15 @@ Some can perform well even use lower version numbers.
 
 5. Open a cmd shell in another working directory. Clone our source code in it:
 ```cmd.exe
-md VSLC
-cd VSLC
+MD VSLC
+CD VSLC
 git clone git@github.com:EnderQIU/vslc.git src\
 ```
 
 6. Build the vslc Visual Studio project with cmake in command shell:
 ```cmd.exe
-md build\
-cd build\
+MD build\
+CD build\
 cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 15" ../src
 ```
 
