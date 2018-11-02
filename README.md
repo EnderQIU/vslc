@@ -82,6 +82,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -G "Xcode" ../src
 ```
 
 ## Usage
+If specified a source file name, it will compile it and output the binary IR code file.
 ```bash
 > vslc --help
 usage: vslc [options] ... filename
@@ -89,6 +90,19 @@ options:
   -v, --verbose    Enable verbose mode, display the output of scanner and parser.
   -o, --output     Specify output file name. Default is a.out. (string [=a.out])
   -?, --help       print this message
+```
+
+
+Else, it will enter the interactive shell mode. The '-v' option is still valid.
+Use the backslash to start a new line.
+```bash
+> vslc
+VSLC v0.1 interactive shell
+>>> FUNC main(){\
+>>> VAR i\
+>>> i := i + 1\
+>>> }
+>>> 
 ```
 
 ## Acknowledgement

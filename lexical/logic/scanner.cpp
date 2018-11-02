@@ -1,7 +1,3 @@
-#include <utility>
-
-#include <utility>
-
 //
 // Created by enderqiu on 2018/9/15.
 //
@@ -59,7 +55,7 @@ void Scanner::initState() {
 void Scanner::switchState(char targetState) {
     if (targetState == 's'){
         cout << "FATAL ERROR: Lexer error: State 's' is not switchable, please use initState() instead." << endl;
-        exit(-1);
+        abort(-1, true);
     }
     this->state = targetState;
 }
@@ -291,18 +287,22 @@ void Scanner:: _raiseScanError(string reason) {
     cerr<<"State: "<<state<<endl;
     cerr<<"Char stack: "<<char_stack<<endl;
     cerr<<"Present char: '"<<present_char<<"'"<<endl;
-    exit(-1);
+    abort(-1);
 }
 
 void Scanner::_raiseFatalError(string reason) {
     cerr<<"FATAL ERROR: Lexical error: "<<reason<<"."<<endl;
-    exit(-1);
+    abort(-1, true);
 }
 
 
 void Scanner::_displayResult() {
     if (token_list.empty()){
-        _raiseFatalError("No result for scanner");
+        if (shellMode){  // ignore empty line as error in shell mode
+            return;
+        }
+        _raiseFatalError("No result from scanner");
+        return;
     }
     cout << "====================================" << endl;
     cout << "Lexical Analysis Result Table         " << endl;
@@ -347,7 +347,7 @@ void Scanner::_displayResult() {
     cout << "------------------------------------" << endl;
 }
 
-vector<Token> Scanner::scan(bool verboseMode) {
+vector<Token> Scanner::scan() {
     _scan();
     if (verboseMode){
         _displayResult();

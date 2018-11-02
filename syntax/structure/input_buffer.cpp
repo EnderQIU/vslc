@@ -7,7 +7,8 @@
 InputBuffer::InputBuffer(vector<Symbol> symbols) {
     if (symbols.empty()){
         cerr<<"ERROR: Parser Error: No tokens found"<<endl;
-        exit(-1);
+        abort(-1);
+        return;
     }
     this->symbols = symbols;
     this->index = 0;
@@ -22,7 +23,7 @@ void InputBuffer::next() {
     index++;
     if (index > len){
         cerr<<"FATAL ERROR: Parser Error: INPUT overflow"<<endl;
-        exit(-1);
+        abort(-1, true);
     }
 }
 

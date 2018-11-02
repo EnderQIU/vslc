@@ -8,6 +8,10 @@
 #include <stack>
 
 #include "symbol.h"
+#include "../../utils/shortcuts.h"
+
+
+extern void abort();
 
 using namespace std;
 
@@ -19,6 +23,7 @@ public:
     Symbol top();
     void pop();
     void push(Symbol symbol);
+    void clear();
     bool empty();
 };
 

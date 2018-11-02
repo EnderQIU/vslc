@@ -57,3 +57,15 @@ string SourceCodeReader::getLine(unsigned long line_num) {
 char SourceCodeReader::lookNextChar() {
     return content.at(offset);
 }
+
+void SourceCodeReader::addLine(string aline) {
+    line.push_back(aline + '\n');
+    content += aline + '\n';
+    len += content.size();
+}
+
+SourceCodeReader::SourceCodeReader() {
+    this->filename = "shell";
+    len = 0;
+    content = "";
+}

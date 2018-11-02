@@ -10,9 +10,15 @@
 #include <string>
 #include <stack>
 #include <iomanip>
+#include <utility>
 
 #include "../structure/token.h"
 #include "../../utils/source_code_reader.h"
+#include "../../utils/shortcuts.h"
+
+
+extern bool verboseMode, shellMode;
+extern void abort();
 
 using namespace std;
 
@@ -42,7 +48,7 @@ private:
     void _raiseFatalError(string reason);
 public:
     explicit Scanner(SourceCodeReader reader);
-    vector<Token> scan(bool verboseMode);
+    vector<Token> scan();
 };
 
 
