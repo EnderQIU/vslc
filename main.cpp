@@ -113,6 +113,12 @@ int main(int argc, char* argv[]) {
     if (verboseMode) {
         rootNode.print();
     }
+
+    // init llvm engine
+    LLVMContext theContext;
+    IRBuilder<> buider(theContext);
+    Module *theModule;
+    std::map<std::string, Value *> namedValues;
     
     return 0;
 }

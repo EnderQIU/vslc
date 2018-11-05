@@ -37,7 +37,7 @@ install    <DIR> XX-XX-XX XX:XX
 - Hit the `Configure` button to specify the generator for this project as `Visual Studio 15 2017` and choose `Use default native compilers`.
 - Hit the `Generate` button to generate a Visual Studio Solution.
 
-3. Open `LLVM.sln` and select the target `INSTALL` as the startup item. Then click `Project > Build Solution`.
+3. Open `LLVM.sln` and select the target `INSTALL` as the startup item. Then click `Generate` > `Generate INSTALL`.
 
 4. Create a system environment variable named `LLVM_DIR` with the value of the `install\lib\cmake` directory's **full path**.
 
