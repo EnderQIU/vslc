@@ -1,12 +1,21 @@
 #include <iostream>
 
+#include <llvm/IR/IRBuilder.h>
+
 #include "utils/cmdline.h"
 #include "lexical/logic/scanner.h"
 #include "syntax/structure/input_buffer.h"
 #include "syntax/logic/parser.h"
+#include "utils/engine.h"
 
 bool verboseMode = false;
 bool shellMode = false;
+
+extern llvm::LLVMContext context;
+extern llvm::IRBuilder<> builder;
+extern llvm::Module * module;
+extern std::map<std::string, llvm::Value *> namedValues;
+
 
 bool endswith(std::string const& str, std::string const& what) {
     return what.size() <= str.size()
@@ -60,6 +69,9 @@ int shell(){
                 rootNode.print();
             }
         }
+        catch (ParseException & exc){
+            if (verboseMode) cerr << exc.what() << endl;
+        }
         catch (const exception &exc){
             if (verboseMode) cerr << exc.what() << endl;
             continue;
@@ -110,15 +122,9 @@ int main(int argc, char* argv[]) {
     // syntax analysis
     Parser parser = Parser(inputBuffer, reader);
     AST rootNode = parser.parse();
-    if (verboseMode) {
-        rootNode.print();
-    }
+    if (verboseMode) rootNode.print();
 
-    // init llvm engine
-    LLVMContext theContext;
-    IRBuilder<> buider(theContext);
-    Module *theModule;
-    std::map<std::string, Value *> namedValues;
-    
+
+
     return 0;
 }

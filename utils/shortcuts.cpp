@@ -4,6 +4,12 @@
 
 #include "shortcuts.h"
 
+
+const char *ParseException::what() const noexcept {
+    return "A Parsing Error Occurred.";
+}
+
+
 void abort(int exitNumber, bool forceExit){
     if (forceExit){
         exit(exitNumber);
@@ -12,7 +18,6 @@ void abort(int exitNumber, bool forceExit){
         return;
     }
     else{
-        exit(exitNumber);
+        throw ParseException();
     }
 }
-

@@ -5,10 +5,17 @@
 #ifndef VSLC_SHORTCUTS_H
 #define VSLC_SHORTCUTS_H
 
+#include <exception>
 #include <cstdlib>
 
 
-extern bool verboseMode, shellMode;
+class CompileException: public std::exception{};
+
+
+class ParseException: public CompileException{
+public:
+    const char* what()const noexcept override;
+};
 
 /*
  * Abort execution unlike exit()

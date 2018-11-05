@@ -71,7 +71,7 @@ mkdir VSLC/
 cd VSLC/
 git clone git@github.com:EnderQIU/vslc.git src/
 mkdir build/
-cd build/
+cd bui
 
 brew install llvm
 

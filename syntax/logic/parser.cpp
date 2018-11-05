@@ -106,8 +106,18 @@ Parser::Parser(InputBuffer inputBuffer, SourceCodeReader sourceCodeReader) {
 
 AST Parser::parse() {
     if (shellMode){
-        //TODO register all possible root symbols
+        // Register all possible root symbols. See docs/code_generations.md #Code Generation in Shell Mode
         possibleRootSymbols.push(Symbol(SymbolType::S));
+        possibleRootSymbols.push(Symbol(SymbolType::A));
+        possibleRootSymbols.push(Symbol(SymbolType::B));
+        possibleRootSymbols.push(Symbol(SymbolType::D));
+        possibleRootSymbols.push(Symbol(SymbolType::F));
+        possibleRootSymbols.push(Symbol(SymbolType::H));
+        possibleRootSymbols.push(Symbol(SymbolType::J));
+        possibleRootSymbols.push(Symbol(SymbolType::K));
+        possibleRootSymbols.push(Symbol(SymbolType::L));
+        possibleRootSymbols.push(Symbol(SymbolType::R));
+        possibleRootSymbols.push(Symbol(SymbolType::U));
 
         // try all possible syntax trees
         AST rootAST;

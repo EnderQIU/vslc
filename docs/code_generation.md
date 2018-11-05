@@ -36,12 +36,12 @@ to recursive descent because we don't need to extend syntax analysis part in the
 Our syntax analysis procedure also output a syntax tree.
 
 
-Unlikly to kaleidoscope. our syntax tree only has one kind of node which means we 
+Unlikely to kaleidoscope. our syntax tree only has one kind of node which means we 
 won't need to use polymorphism. we plan to call different code generation method 
 according to the type of symbol in this three node.
 
 
-It is likly that our codegen method will look like this:
+It is likely that our codegen method will look like this:
 
 
 ```cpp
@@ -64,3 +64,35 @@ Value *AST::printCodeGen(){
 }
 ...
 ```
+
+
+## Code Generation in Shell Mode
+Available non-terminators which can be input at a time in the shell are marked with "*".
+
+- - - - - - - - - - - - - - - - - - - - - 
+| Non-terminator | Reference            | 
+| -------------- | -------------------- | 
+| S *            | program              | 
+| A *            | function_list        | 
+| B *            | function             | 
+| C              | parameter_list       | 
+| D *            | statement            | 
+| E              | variable_list        | 
+| F *            | assignment_statement | 
+| G              | return_statement     | 
+| H *            | print_statement      | 
+| I              | null_statement       | 
+| J *            | if_statement         | 
+| K *            | while_statement      | 
+| L *            | block                | 
+| M              | expression           | 
+| N              | argument_list        | 
+| O              | expression_list      | 
+| P              | print_list           | 
+| Q              | print_item           | 
+| R *            | declaration_list     | 
+| T              | statement_list       | 
+| U *            | declaration          | 
+| V              | term                 | 
+| W              | factor               | 
+- - - - - - - - - - - - - - - - - - - - - 
