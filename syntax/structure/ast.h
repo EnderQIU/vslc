@@ -8,8 +8,15 @@
 #include <vector>
 
 #include "symbol.h"
+#include "../../utils/engine.h"
 
 using namespace std;
+
+extern llvm::LLVMContext context;
+extern llvm::IRBuilder<> builder;
+extern llvm::Module * module;
+extern std::map<std::string, llvm::Value *> namedValues;
+
 
 class AST{
 private:

@@ -124,6 +124,7 @@ int main(int argc, char* argv[]) {
     AST rootNode = parser.parse();
     if (verboseMode) rootNode.print();
 
+    // IR code generation
 
 
     return 0;
