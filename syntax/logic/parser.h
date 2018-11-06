@@ -17,9 +17,6 @@
 #include <utility>
 
 
-extern bool verboseMode, shellMode;
-extern void abort();
-
 class Parser {
 private:
     InputBuffer inputBuffer;

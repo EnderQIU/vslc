@@ -17,9 +17,6 @@
 #include "../../utils/shortcuts.h"
 
 
-extern bool verboseMode, shellMode;
-extern void abort();
-
 using namespace std;
 
 class Scanner {

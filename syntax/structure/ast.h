@@ -10,13 +10,8 @@
 #include "symbol.h"
 #include "../../utils/engine.h"
 
+
 using namespace std;
-
-extern llvm::LLVMContext context;
-extern llvm::IRBuilder<> builder;
-extern llvm::Module * module;
-extern std::map<std::string, llvm::Value *> namedValues;
-
 
 class AST{
 private:
@@ -24,9 +19,12 @@ private:
     AST* parent = nullptr;
     AST* copy(AST*);
     void print(vector<AST*> nodes, string prefix);
+    // LLVM IR code generation for specific node ... about 56 functions
+
 public:
     vector<AST*> children;
-    AST(Symbol symbol);
+
+    explicit AST(Symbol symbol);
     bool isLeaf() { return children.empty(); }
     bool isRoot() { return parent == nullptr; }
     AST* getParent() { return parent; }
@@ -35,10 +33,11 @@ public:
     AST* getLowerLeftTNode();   // find the terminal node which is in the top of inputbuffer
     void addChild(AST* child);
     void setSymbol(Symbol symbol);
-    AST() {};
+    AST() = default;;
     void setParent(AST* parent);
     AST* copy();
     void print();
+    template<typename T> T gen(T returnType);  // LLVM IR code generation. Decide which gen() function to use.
 };
 
 #endif //VSLC_AST_H

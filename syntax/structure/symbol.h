@@ -10,8 +10,6 @@
 #include "../../utils/shortcuts.h"
 
 
-extern void abort();
-
 enum class SymbolType {
     // Inherited from TokenType, removed some non-grammatical token types
 

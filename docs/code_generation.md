@@ -96,3 +96,81 @@ Available non-terminators which can be input at a time in the shell are marked w
 | V              | term                 | 
 | W              | factor               | 
 - - - - - - - - - - - - - - - - - - - - - 
+
+## Full Code Generation Table
+In AST class, we use the public gen() function for outer code gen access to hide details. It will
+call the private code gen function by the AST type of itself.
+
+There are 3 kinds of private code generation functions in total:
+
+1. void gen(): Usually in non-terminators which can present as a kind of "statement". It will collect 
+ its child nodes' values and insert into the LLVM IR builder.
+
+2. Value gen(): Usually in terminators, just wrap up the value of itself and throw it up.
+
+3. Value gen(Value value1, Value value2, ...): Usually in the expression AST nodes. Collect child 
+ nodes' values and pass to its parent node.
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+| Non-terminator & terminator | Reference            | Code Generation Function Prototype |
+| --------------------------- | -------------------- | ---------------------------------- |
+| S                           | program              | void genS()                        |
+| A                           | function_list        |                                    |
+| A'                          |                      |                                    |
+| B                           | function             |                                    |
+| C                           | parameter_list       |                                    |
+| D                           | statement            |                                    |
+| E                           | variable_list        |                                    |
+| E'                          |                      |                                    |
+| F                           | assignment_statement |                                    |
+| G                           | return_statement     |                                    |
+| H                           | print_statement      |                                    |
+| I                           | null_statement       |                                    |
+| J                           | if_statement         |                                    |
+| J'                          |                      |                                    |
+| K                           | while_statement      |                                    |
+| L                           | block                |                                    |
+| M                           | expression           |                                    |
+| M'                          |                      |                                    |
+| N                           | argument_list        |                                    |
+| O                           | expression_list      |                                    |
+| O'                          |                      |                                    |
+| P                           | print_list           |                                    |
+| P'                          |                      |                                    |
+| Q                           | print_item           |                                    |
+| R                           | declaration_list     |                                    |
+| R'                          |                      |                                    |
+| T                           | statement_list       |                                    |
+| T'                          |                      |                                    |
+| U                           | declaration          |                                    |
+| V                           | term                 |                                    |
+| V'                          |                      |                                    |
+| W                           | factor               |                                    |
+| W'                          |                      |                                    |
+| (                           | L_BRACKET            |                                    |
+| )                           | R_BRACKET            |                                    |
+| ,                           | COMMA                |                                    |
+| +                           | PLUS                 |                                    |
+| -                           | MINUS                |                                    |
+| *                           | MULTIPLY             |                                    |
+| /                           | DIVIDE               |                                    |
+| {                           | L_CURLY_BRAC         |                                    |
+| }                           | R_CURLY_BRAC         |                                    |
+| a                           | FUNC                 |                                    |
+| b                           | IDENTIFIER           |                                    |
+| c                           | ASSIGN               |                                    |
+| d                           | INTEGER              |                                    |
+| e                           | PRINT                |                                    |
+| f                           | TEXT                 |                                    |
+| g                           | RETURN               |                                    |
+| h                           | CONTINUE             |                                    |
+| i                           | IF                   |                                    |
+| j                           | THEN                 |                                    |
+| k                           | FI                   |                                    |
+| l                           | ELSE                 |                                    |
+| m                           | WHILE                |                                    |
+| n                           | DO                   |                                    |
+| o                           | DONE                 |                                    |
+| p                           | VAR                  |                                    |
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

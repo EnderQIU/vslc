@@ -8,7 +8,7 @@
 Symbol ParsingStack::top() {
     if (symbols.empty()) {
         cerr<<"FATAL ERROR: Parser Error: Call top() when parsing stack is empty"<<endl;
-        abort(-1, true);
+        abort(PARSEEXCEPTION);
     }
     return symbols.top();
 }

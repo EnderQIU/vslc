@@ -8,9 +8,25 @@
 #include <llvm/IR/IRBuilder.h>
 
 
-llvm::LLVMContext TheContext;
-llvm::IRBuilder<> Buider(TheContext);
-std::unique_ptr<llvm::Module> TheModule;
-std::map<std::string, llvm::Value *> NamedValues;
+class LLVMEngine {
+private:
+    LLVMEngine();
+    static LLVMEngine * engineInstance;
+    static LLVMEngine * engineBackup;
+
+    llvm::LLVMContext * TheContext;
+    llvm::IRBuilder<> * Builder;
+    std::unique_ptr<llvm::Module> * TheModule;
+    std::map<std::string, llvm::Value *> * NamedValues;
+public:
+    static LLVMEngine * GetInstance();
+    llvm::LLVMContext * getContext();
+    llvm::IRBuilder<> * getBuilder();
+    std::unique_ptr<llvm::Module> * getModule();
+    std::map<std::string, llvm::Value *> * getNamedValues();
+
+    void save();  // save llvm context state for restoring state if any exception happened
+    void restore();  // restore llvm context state if any exception happened
+};
 
 #endif //VSLC_ENGINE_H

@@ -62,7 +62,7 @@ void Parser::_raiseError(Symbol x) {
         parsingStack.pop();
     }
     cerr<<endl;
-    abort(-1);
+    abort(PARSEEXCEPTION);
 }
 
 void Parser::_raiseErrorEntry(Symbol X, Symbol ip) {
@@ -87,7 +87,7 @@ void Parser::_raiseErrorEntry(Symbol X, Symbol ip) {
         parsingStack.pop();
     }
     cerr<<endl;
-    abort(-1);
+    abort(PARSEEXCEPTION);
 }
 
 void Parser::_dispalyResult() {

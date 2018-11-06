@@ -83,7 +83,7 @@ Symbol::Symbol(Token token) {
             break;
         default:
             cerr<<"FATAL ERROR: Error: No such token"<<endl;
-            abort(-1, true);
+            abort(FATALEXCEPTION);
     }
     this->value = token.value;
     this->line = token.line;
@@ -225,7 +225,7 @@ string Symbol::getDisplay() {
             return "$";
         default:
             cerr<<"FATAL ERROR: Error: Can't display such symbol."<<endl;
-            abort(-1, true);
+            abort(FATALEXCEPTION);
     }
 }
 

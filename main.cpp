@@ -8,14 +8,9 @@
 #include "syntax/logic/parser.h"
 #include "utils/engine.h"
 
+
 bool verboseMode = false;
 bool shellMode = false;
-
-extern llvm::LLVMContext context;
-extern llvm::IRBuilder<> builder;
-extern llvm::Module * module;
-extern std::map<std::string, llvm::Value *> namedValues;
-
 
 bool endswith(std::string const& str, std::string const& what) {
     return what.size() <= str.size()
@@ -68,13 +63,21 @@ int shell(){
             if (verboseMode) {
                 rootNode.print();
             }
+
+            // IR code generation
+            // save LLVM engine status
         }
-        catch (ParseException & exc){
+        catch (ScanException & exc)
+        {
             if (verboseMode) cerr << exc.what() << endl;
         }
-        catch (const exception &exc){
+        catch (ParseException & exc)
+        {
             if (verboseMode) cerr << exc.what() << endl;
-            continue;
+        }
+        catch (CodeGenException & exc)
+        {
+            if (verboseMode) cerr << exc.what() << endl;
         }
     }
 }
@@ -109,22 +112,38 @@ int main(int argc, char* argv[]) {
     // Read source code file
     SourceCodeReader reader = SourceCodeReader(inputFileName);
 
-    // Lexical analysis
-    Scanner scanner = Scanner(reader);
-    vector<Token> scanner_result = scanner.scan();
+    try {
+        // Lexical analysis
+        Scanner scanner = Scanner(reader);
+        vector<Token> scanner_result = scanner.scan();
 
-    // Clear non-grammatical tokens & initialize the input buffer
-    vector<Symbol> symbols = vector<Symbol>();
-    for (Token i : scanner_result) if (i.isGrammatical) symbols.emplace_back(i);
-    symbols.emplace_back(SymbolType::HASHTAG);  // input buffer symbols --  end with $
-    InputBuffer inputBuffer = InputBuffer(symbols);
+        // Clear non-grammatical tokens & initialize the input buffer
+        vector<Symbol> symbols = vector<Symbol>();
+        for (Token i : scanner_result) if (i.isGrammatical) symbols.emplace_back(i);
+        symbols.emplace_back(SymbolType::HASHTAG);  // input buffer symbols --  end with $
+        InputBuffer inputBuffer = InputBuffer(symbols);
 
-    // syntax analysis
-    Parser parser = Parser(inputBuffer, reader);
-    AST rootNode = parser.parse();
-    if (verboseMode) rootNode.print();
+        // syntax analysis
+        Parser parser = Parser(inputBuffer, reader);
+        AST rootNode = parser.parse();
+        if (verboseMode) rootNode.print();
 
-    // IR code generation
+        // IR code generation
+        // convert to AST with code gen function
+
+    }
+    catch (ScanException & exc)
+    {
+        if (verboseMode) cerr << exc.what() << endl;
+    }
+    catch (ParseException & exc)
+    {
+        if (verboseMode) cerr << exc.what() << endl;
+    }
+    catch (CodeGenException & exc)
+    {
+        if (verboseMode) cerr << exc.what() << endl;
+    }
 
 
     return 0;

@@ -57,8 +57,8 @@ AST* AST::copy() {
         newTree->addChild(this->children.at(i)->copy(this));
     }
     return newTree;
-
 }
+
 AST* AST::copy(AST* parent) {
     AST* newTree = new AST(this->symbol);
     newTree->setParent(parent->getParent());
@@ -106,4 +106,14 @@ void AST::print() {
     cout << '\n' << "AST TREE" << endl;
     cout << PREFIX_LEAF << "  " << this->getSymbol().getTypeName() << endl;
     this->print(this->children, PREFIX_LEAF);
+}
+
+template<typename T>
+T AST::gen(T returnType) {
+    switch (symbol.type){
+        case SymbolType::S:
+            return children[0]->gen<T>();
+        default:
+            break;
+    }
 }

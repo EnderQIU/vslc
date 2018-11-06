@@ -11,8 +11,6 @@
 #include "../../utils/shortcuts.h"
 
 
-extern void abort();
-
 using namespace std;
 
 class ParsingStack {

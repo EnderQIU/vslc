@@ -55,7 +55,7 @@ void Scanner::initState() {
 void Scanner::switchState(char targetState) {
     if (targetState == 's'){
         cout << "FATAL ERROR: Lexer error: State 's' is not switchable, please use initState() instead." << endl;
-        abort(-1, true);
+        abort(FATALEXCEPTION);
     }
     this->state = targetState;
 }
@@ -287,12 +287,12 @@ void Scanner:: _raiseScanError(string reason) {
     cerr<<"State: "<<state<<endl;
     cerr<<"Char stack: "<<char_stack<<endl;
     cerr<<"Present char: '"<<present_char<<"'"<<endl;
-    abort(-1);
+    abort(SCANEXCEPTION);
 }
 
 void Scanner::_raiseFatalError(string reason) {
     cerr<<"FATAL ERROR: Lexical error: "<<reason<<"."<<endl;
-    abort(-1, true);
+    abort(SCANEXCEPTION);
 }
 
 
