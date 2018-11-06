@@ -27,7 +27,7 @@ const char *CodeGenException::what() const noexcept {
 void abort(int exc){
     switch (exc){
         case FATALEXCEPTION:
-            exit(1);
+            exit(FATALEXCEPTION);
         case SCANEXCEPTION:
             throw ScanException();
         case PARSEEXCEPTION:

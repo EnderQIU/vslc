@@ -115,24 +115,24 @@ There are 3 kinds of private code generation functions in total:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 | Non-terminator & terminator | Reference            | Code Generation Function Prototype |
 | --------------------------- | -------------------- | ---------------------------------- |
-| S                           | program              | void genS()                        |
-| A                           | function_list        |                                    |
-| A'                          |                      |                                    |
-| B                           | function             |                                    |
-| C                           | parameter_list       |                                    |
-| D                           | statement            |                                    |
-| E                           | variable_list        |                                    |
-| E'                          |                      |                                    |
-| F                           | assignment_statement |                                    |
-| G                           | return_statement     |                                    |
-| H                           | print_statement      |                                    |
-| I                           | null_statement       |                                    |
-| J                           | if_statement         |                                    |
-| J'                          |                      |                                    |
-| K                           | while_statement      |                                    |
-| L                           | block                |                                    |
-| M                           | expression           |                                    |
-| M'                          |                      |                                    |
+| S                           | program              | void gen<void> ()                  |
+| A                           | function_list        | void gen<void> ()                  |
+| A'                          |                      | void gen<void> ()                  |
+| B                           | function             | void gen<void> ()                  |
+| C                           | parameter_list       | Value* gen<Value*> ()              |
+| D                           | statement            | void gen<void> ()                  |
+| E                           | variable_list        | void gen<void> ()                  |
+| E'                          |                      | void gen<void> ()                  |
+| F                           | assignment_statement | void gen<void> ()                  |
+| G                           | return_statement     | void gen<void> ()                  |
+| H                           | print_statement      | void gen<void> ()                  |
+| I                           | null_statement       | void gen<void> ()                  |
+| J                           | if_statement         | void gen<void> ()                  |
+| J'                          |                      | void gen<void> ()                  |
+| K                           | while_statement      | void gen<void> ()                  |
+| L                           | block                | void gen<void> ()                  |
+| M                           | expression           | Value* gen<Value*>()               |
+| M'                          |                      | Value* gen<Value*>()               |
 | N                           | argument_list        |                                    |
 | O                           | expression_list      |                                    |
 | O'                          |                      |                                    |
@@ -148,29 +148,29 @@ There are 3 kinds of private code generation functions in total:
 | V'                          |                      |                                    |
 | W                           | factor               |                                    |
 | W'                          |                      |                                    |
-| (                           | L_BRACKET            |                                    |
-| )                           | R_BRACKET            |                                    |
-| ,                           | COMMA                |                                    |
-| +                           | PLUS                 |                                    |
-| -                           | MINUS                |                                    |
-| *                           | MULTIPLY             |                                    |
-| /                           | DIVIDE               |                                    |
-| {                           | L_CURLY_BRAC         |                                    |
-| }                           | R_CURLY_BRAC         |                                    |
-| a                           | FUNC                 |                                    |
-| b                           | IDENTIFIER           |                                    |
-| c                           | ASSIGN               |                                    |
-| d                           | INTEGER              |                                    |
-| e                           | PRINT                |                                    |
-| f                           | TEXT                 |                                    |
-| g                           | RETURN               |                                    |
-| h                           | CONTINUE             |                                    |
-| i                           | IF                   |                                    |
-| j                           | THEN                 |                                    |
-| k                           | FI                   |                                    |
-| l                           | ELSE                 |                                    |
-| m                           | WHILE                |                                    |
-| n                           | DO                   |                                    |
-| o                           | DONE                 |                                    |
-| p                           | VAR                  |                                    |
+| (                           | L_BRACKET            | Value* gen<Value*> ()              |
+| )                           | R_BRACKET            | Value* gen<Value*> ()              |
+| ,                           | COMMA                | Value* gen<Value*> ()              |
+| +                           | PLUS                 | Value* gen<Value*> ()              |
+| -                           | MINUS                | Value* gen<Value*> ()              |
+| *                           | MULTIPLY             | Value* gen<Value*> ()              |
+| /                           | DIVIDE               | Value* gen<Value*> ()              |
+| {                           | L_CURLY_BRAC         | Value* gen<Value*> ()              |
+| }                           | R_CURLY_BRAC         | Value* gen<Value*> ()              |
+| a                           | FUNC                 | Value* gen<Value*> ()              |
+| b                           | IDENTIFIER           | Value* gen<Value*> ()              |
+| c                           | ASSIGN               | Value* gen<Value*> ()              |
+| d                           | INTEGER              | Value* gen<Value*> ()              |
+| e                           | PRINT                | Value* gen<Value*> ()              |
+| f                           | TEXT                 | Value* gen<Value*> ()              |
+| g                           | RETURN               | Value* gen<Value*> ()              |
+| h                           | CONTINUE             | Value* gen<Value*> ()              |
+| i                           | IF                   | Value* gen<Value*> ()              |
+| j                           | THEN                 | Value* gen<Value*> ()              |
+| k                           | FI                   | Value* gen<Value*> ()              |
+| l                           | ELSE                 | Value* gen<Value*> ()              |
+| m                           | WHILE                | Value* gen<Value*> ()              |
+| n                           | DO                   | Value* gen<Value*> ()              |
+| o                           | DONE                 | Value* gen<Value*> ()              |
+| p                           | VAR                  | Value* gen<Value*> ()              |
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

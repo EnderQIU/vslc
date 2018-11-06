@@ -18,6 +18,10 @@ private:
     Symbol symbol = Symbol(SymbolType::EPSILON);
     AST* parent = nullptr;
     AST* copy(AST*);
+    string PREFIX_BRANCH = "├─";  // 树枝
+    string PREFIX_TRUNK = "│ ";   // 树干
+    string PREFIX_LEAF = "└─";    // 叶子
+    string PREFIX_EMP = "  ";     // 空
     void print(vector<AST*> nodes, string prefix);
     // LLVM IR code generation for specific node ... about 56 functions
 
@@ -37,7 +41,8 @@ public:
     void setParent(AST* parent);
     AST* copy();
     void print();
-    template<typename T> T gen(T returnType);  // LLVM IR code generation. Decide which gen() function to use.
+    // LLVM IR code generation.
+    template<typename ReturnType, typename ... ArgumentType> ReturnType gen(ArgumentType&... args);
 };
 
 #endif //VSLC_AST_H

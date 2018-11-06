@@ -39,7 +39,10 @@ set(source_list
         "syntax/structure/symbol.cpp"
         "syntax/structure/symbol.h"
         "syntax/structure/parsing_table.cpp"
-        utils/shortcuts.h utils/shortcuts.cpp utils/engine.h codegen/codegenast.cpp codegen/codegenast.h utils/engine.cpp)
+        "utils/shortcuts.h"
+        "utils/shortcuts.cpp"
+        "utils/engine.h"
+        "utils/engine.cpp")
 
 assign_source_group(${source_list})
 

@@ -11,15 +11,12 @@
 class LLVMEngine {
 private:
     LLVMEngine();
-    static LLVMEngine * engineInstance;
-    static LLVMEngine * engineBackup;
-
     llvm::LLVMContext * TheContext;
     llvm::IRBuilder<> * Builder;
     std::unique_ptr<llvm::Module> * TheModule;
     std::map<std::string, llvm::Value *> * NamedValues;
 public:
-    static LLVMEngine * GetInstance();
+    static LLVMEngine * instance(LLVMEngine * backup=nullptr);
     llvm::LLVMContext * getContext();
     llvm::IRBuilder<> * getBuilder();
     std::unique_ptr<llvm::Module> * getModule();

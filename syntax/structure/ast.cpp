@@ -68,11 +68,6 @@ AST* AST::copy(AST* parent) {
     return newTree;
 }
 
-string PREFIX_BRANCH = "├─";  // 树枝
-string PREFIX_TRUNK = "│ ";   // 树干
-string PREFIX_LEAF = "└─";    // 叶子
-string PREFIX_EMP = "  ";     // 空
-
 string& replace_all_distinct(string& str, const string& old_value, const string& new_value) {
     for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
         if ((pos = str.find(old_value, pos)) != string::npos)
@@ -108,12 +103,138 @@ void AST::print() {
     this->print(this->children, PREFIX_LEAF);
 }
 
-template<typename T>
-T AST::gen(T returnType) {
+template<typename ReturnType, typename ... ArgumentType>  // Refer to https://msdn.microsoft.com/zh-cn/library/dn439779.aspx
+ReturnType AST::gen(ArgumentType&... args) {              // for template usage.
     switch (symbol.type){
+        // TODO implement all gen()
+        // Inherited from token
+        case SymbolType::IDENTIFIER:
+            return "b";
+        case SymbolType::FUNC:
+            return "a";
+        case SymbolType::PRINT:
+            return "e";
+        case SymbolType::RETURN:
+            return "g";
+        case SymbolType::CONTINUE:
+            return "h";
+        case SymbolType::IF:
+            return "i";
+        case SymbolType::THEN:
+            return "j";
+        case SymbolType::ELSE:
+            return "l";
+        case SymbolType::FI:
+            return "k";
+        case SymbolType::WHILE:
+            return "m";
+        case SymbolType::DO:
+            return "n";
+        case SymbolType::DONE:
+            return "o";
+        case SymbolType::VAR:
+            return "p";
+        case SymbolType::ASSIGN:
+            return "c";
+        case SymbolType::PLUS:
+            return "+";
+        case SymbolType::MINUS:
+            return "-";
+        case SymbolType::MULTIPLY:
+            return "*";
+        case SymbolType::DIVIDE:
+            return "/";
+        case SymbolType::L_CURLY_BRACE:
+            return "{";
+        case SymbolType::R_CURLY_BRACE:
+            return "}";
+        case SymbolType::L_BRACKET:
+            return "(";
+        case SymbolType::R_BRACKET:
+            return ")";
+        case SymbolType::COMMA:
+            return ",";
+        case SymbolType::INTEGER:
+            return "d";
+        case SymbolType::TEXT:
+            return "f";
+        // non-terminators
         case SymbolType::S:
-            return children[0]->gen<T>();
+            return "S";
+        case SymbolType::A:
+            return "A";
+        case SymbolType::B:
+            return "B";
+        case SymbolType::C:
+            return "C";
+        case SymbolType::D:
+            return "D";
+        case SymbolType::E:
+            return "E";
+        case SymbolType::F:
+            return "F";
+        case SymbolType::G:
+            return "G";
+        case SymbolType::H:
+            return "H";
+        case SymbolType::I:
+            return "I";
+        case SymbolType::J:
+            return "J";
+        case SymbolType::K:
+            return "K";
+        case SymbolType::L:
+            return "L";
+        case SymbolType::M:
+            return "M";
+        case SymbolType::N:
+            return "N";
+        case SymbolType::O:
+            return "O";
+        case SymbolType::P:
+            return "P";
+        case SymbolType::Q:
+            return "Q";
+        case SymbolType::R:
+            return "R";
+        case SymbolType::T:
+            return "T";
+        case SymbolType::U:
+            return "U";
+        case SymbolType::V:
+            return "V";
+        case SymbolType::W:
+            return "W";
+        // non-terminators with '
+        case SymbolType::A_:
+            return "A'";
+        case SymbolType::E_:
+            return "E'";
+        case SymbolType::M_:
+            return "M'";
+        case SymbolType::V_:
+            return "V'";
+        case SymbolType::W_:
+            return "W'";
+        case SymbolType::P_:
+            return "P'";
+        case SymbolType::R_:
+            return "R'";
+        case SymbolType::T_:
+            return "T'";
+        case SymbolType::O_:
+            return "O'";
+        case SymbolType::J_:
+            return "J'";
+            // Special Symbols
+        case SymbolType::EPSILON:
+            return "ε";
+        case SymbolType::HASHTAG:
+            return "#";
+        case SymbolType::DOLLAR:
+            return "$";
         default:
-            break;
+            cerr << "Code Generation Function for Symbol Type "<< symbol.getDisplay() << " Not Defined." << endl;
+            abort(FATALEXCEPTION);
     }
 }

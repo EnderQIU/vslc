@@ -130,6 +130,7 @@ int main(int argc, char* argv[]) {
 
         // IR code generation
         // convert to AST with code gen function
+        //rootNode.gen<void>();
 
     }
     catch (ScanException & exc)
