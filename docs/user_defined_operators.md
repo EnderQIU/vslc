@@ -26,11 +26,14 @@
 
 ## Unary Operators
 
-   Since we don’t currently support unary operators in the Kaleidoscope language, we’ll need to add everything to support them, the steps are as follows:
+​    Since we don’t currently support unary operators in the Kaleidoscope language, we’ll need to add everything to support them, the steps are as follows:
 
 - Add support for the unary keywords to the lexer
+
 - Add `UnaryExprAST` node Inherited from `ExprAST` to represent unary operations
+
 - Add `ParseUnary` function to parse a unary operator
+
 - Extend `ParsePrototype` function to parse the operator definition function
 
 ​    This code is similar to, but simpler than, the code for binary operators. It is simpler primarily because it doesn't need to handle any predefined operators.
