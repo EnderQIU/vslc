@@ -7,21 +7,17 @@
 
 LLVMEngine::LLVMEngine() = default;
 
-LLVMEngine * LLVMEngine::instance(LLVMEngine * backup){
+LLVMEngine * LLVMEngine::instance(){
     static LLVMEngine engineInstance;
-    //TODO backup the instance
-//    if (backup != nullptr){
-//        engineInstance = backup;
-//    }
     return &engineInstance;
 }
 
 void LLVMEngine::save() {
-
+    //TODO backup the LLVM engine instance
 }
 
 void LLVMEngine::restore() {
-    //TODO Deep copy the members
+    //TODO Deep copy the members to restore the instance
 }
 
 llvm::LLVMContext * LLVMEngine::getContext() {

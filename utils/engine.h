@@ -16,7 +16,7 @@ private:
     std::unique_ptr<llvm::Module> * TheModule;
     std::map<std::string, llvm::Value *> * NamedValues;
 public:
-    static LLVMEngine * instance(LLVMEngine * backup=nullptr);
+    static LLVMEngine * instance();
     llvm::LLVMContext * getContext();
     llvm::IRBuilder<> * getBuilder();
     std::unique_ptr<llvm::Module> * getModule();

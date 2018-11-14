@@ -128,9 +128,10 @@ int main(int argc, char* argv[]) {
         AST rootNode = parser.parse();
         if (verboseMode) rootNode.print();
 
+        // init LLVM engine
+        LLVMEngine::instance();
         // IR code generation
-        // convert to AST with code gen function
-        //rootNode.gen<void>();
+        rootNode.gen<void>();
 
     }
     catch (ScanException & exc)

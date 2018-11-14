@@ -1,17 +1,17 @@
 ﻿#include "ast.h"
 
-void AST::addChild(AST* child) {
+void AST::addChild(AST *child) {
     this->children.push_back(child);
     child->setParent(this);
 }
 
-AST* AST::getLowerLeftNTNode() {
-    if (this->symbol.isTerminal()){
+AST *AST::getLowerLeftNTNode() {
+    if (this->symbol.isTerminal()) {
         return this;
-    }else if (this->children.size()!=0){
-        for(AST* child : this->children){
-            AST* currentChild = child->getLowerLeftNTNode();
-            if (!currentChild->symbol.isTerminal()){
+    } else if (this->children.size() != 0) {
+        for (AST *child : this->children) {
+            AST *currentChild = child->getLowerLeftNTNode();
+            if (!currentChild->symbol.isTerminal()) {
                 return currentChild;
             }
         }
@@ -21,21 +21,21 @@ AST* AST::getLowerLeftNTNode() {
     return this;
 }
 
-AST* AST::getLowerLeftTNode() {
-    if (this->symbol.isTerminal()&&this->symbol.type!= SymbolType::EPSILON && this->symbol.value==""){
+AST *AST::getLowerLeftTNode() {
+    if (this->symbol.isTerminal() && this->symbol.type != SymbolType::EPSILON && this->symbol.value == "") {
         return this;
-    }
-    else if (this->children.size() != 0) {
-        for (AST* child : children) {
-            AST* currentChild = child->getLowerLeftTNode();
-            if (currentChild->symbol.isTerminal() && currentChild->symbol.type != SymbolType::EPSILON && currentChild->symbol.value == "") {
+    } else if (this->children.size() != 0) {
+        for (AST *child : children) {
+            AST *currentChild = child->getLowerLeftTNode();
+            if (currentChild->symbol.isTerminal() && currentChild->symbol.type != SymbolType::EPSILON &&
+                currentChild->symbol.value == "") {
                 return currentChild;
             }
         }
     }
     //return a fake non-terminal tell the parent not me
     return new AST(Symbol(SymbolType::A));
-    
+
 
 }
 
@@ -43,7 +43,7 @@ AST::AST(Symbol symbol) {
     this->symbol = symbol;
 }
 
-void AST::setParent(AST* parent) {
+void AST::setParent(AST *parent) {
     this->parent = parent;
 }
 
@@ -51,16 +51,16 @@ void AST::setSymbol(Symbol symbol) {
     this->symbol = symbol;
 }
 
-AST* AST::copy() {
-    AST* newTree = new AST(this->symbol);
-    for (int i = 0; i < this->children.size(); i++){
+AST *AST::copy() {
+    AST *newTree = new AST(this->symbol);
+    for (int i = 0; i < this->children.size(); i++) {
         newTree->addChild(this->children.at(i)->copy(this));
     }
     return newTree;
 }
 
-AST* AST::copy(AST* parent) {
-    AST* newTree = new AST(this->symbol);
+AST *AST::copy(AST *parent) {
+    AST *newTree = new AST(this->symbol);
     newTree->setParent(parent->getParent());
     for (int i = 0; i < this->children.size(); i++) {
         newTree->addChild(this->children.at(i)->copy(this));
@@ -68,17 +68,17 @@ AST* AST::copy(AST* parent) {
     return newTree;
 }
 
-string& replace_all_distinct(string& str, const string& old_value, const string& new_value) {
+string &replace_all_distinct(string &str, const string &old_value, const string &new_value) {
     for (string::size_type pos(0); pos != string::npos; pos += new_value.length()) {
         if ((pos = str.find(old_value, pos)) != string::npos)
             str.replace(pos, old_value.length(), new_value);
         else
             break;
     }
-    return  str;
+    return str;
 }
 
-void AST::print(vector<AST*> nodes, string prefix) {
+void AST::print(vector<AST *> nodes, string prefix) {
     prefix = replace_all_distinct(prefix, PREFIX_BRANCH, PREFIX_TRUNK);
     prefix = replace_all_distinct(prefix, PREFIX_LEAF, PREFIX_EMP);
     for (int i = 0; i < nodes.size(); i++) {
@@ -87,8 +87,7 @@ void AST::print(vector<AST*> nodes, string prefix) {
             if (!nodes[i]->isLeaf()) {
                 this->print(nodes[i]->children, prefix + PREFIX_LEAF);
             }
-        }
-        else {
+        } else {
             cout << prefix << PREFIX_BRANCH << "  " << nodes[i]->getSymbol().getTypeName() << endl;
             if (!nodes[i]->isLeaf()) {
                 this->print(nodes[i]->children, prefix + PREFIX_TRUNK);
@@ -104,137 +103,77 @@ void AST::print() {
 }
 
 template<typename ReturnType, typename ... ArgumentType>  // Refer to https://msdn.microsoft.com/zh-cn/library/dn439779.aspx
-ReturnType AST::gen(ArgumentType&... args) {              // for template usage.
-    switch (symbol.type){
-        // TODO implement all gen()
-        // Inherited from token
-        case SymbolType::IDENTIFIER:
-            return "b";
-        case SymbolType::FUNC:
-            return "a";
-        case SymbolType::PRINT:
-            return "e";
-        case SymbolType::RETURN:
-            return "g";
-        case SymbolType::CONTINUE:
-            return "h";
-        case SymbolType::IF:
-            return "i";
-        case SymbolType::THEN:
-            return "j";
-        case SymbolType::ELSE:
-            return "l";
-        case SymbolType::FI:
-            return "k";
-        case SymbolType::WHILE:
-            return "m";
-        case SymbolType::DO:
-            return "n";
-        case SymbolType::DONE:
-            return "o";
-        case SymbolType::VAR:
-            return "p";
-        case SymbolType::ASSIGN:
-            return "c";
-        case SymbolType::PLUS:
-            return "+";
-        case SymbolType::MINUS:
-            return "-";
-        case SymbolType::MULTIPLY:
-            return "*";
-        case SymbolType::DIVIDE:
-            return "/";
-        case SymbolType::L_CURLY_BRACE:
-            return "{";
-        case SymbolType::R_CURLY_BRACE:
-            return "}";
-        case SymbolType::L_BRACKET:
-            return "(";
-        case SymbolType::R_BRACKET:
-            return ")";
-        case SymbolType::COMMA:
-            return ",";
-        case SymbolType::INTEGER:
-            return "d";
-        case SymbolType::TEXT:
-            return "f";
+ReturnType AST::gen(ArgumentType &... args) {             // for template usage.
+    switch (symbol.type) {
         // non-terminators
         case SymbolType::S:
-            return "S";
+            return false;
         case SymbolType::A:
-            return "A";
+            return false;
         case SymbolType::B:
-            return "B";
+            return false;
         case SymbolType::C:
-            return "C";
+            return false;
         case SymbolType::D:
-            return "D";
+            return false;
         case SymbolType::E:
-            return "E";
+            return false;
         case SymbolType::F:
-            return "F";
+            return false;
         case SymbolType::G:
-            return "G";
+            return false;
         case SymbolType::H:
-            return "H";
+            return false;
         case SymbolType::I:
-            return "I";
+            return false;
         case SymbolType::J:
-            return "J";
+            return false;
         case SymbolType::K:
-            return "K";
+            return false;
         case SymbolType::L:
-            return "L";
+            return false;
         case SymbolType::M:
-            return "M";
+            return false;
         case SymbolType::N:
-            return "N";
+            return false;
         case SymbolType::O:
-            return "O";
+            return false;
         case SymbolType::P:
-            return "P";
+            return false;
         case SymbolType::Q:
-            return "Q";
+            return false;
         case SymbolType::R:
-            return "R";
+            return false;
         case SymbolType::T:
-            return "T";
+            return false;
         case SymbolType::U:
-            return "U";
+            return false;
         case SymbolType::V:
-            return "V";
+            return false;
         case SymbolType::W:
-            return "W";
+            return false;
         // non-terminators with '
         case SymbolType::A_:
-            return "A'";
+            return false;
         case SymbolType::E_:
-            return "E'";
+            return false;
         case SymbolType::M_:
-            return "M'";
+            return false;
         case SymbolType::V_:
-            return "V'";
+            return false;
         case SymbolType::W_:
-            return "W'";
+            return false;
         case SymbolType::P_:
-            return "P'";
+            return false;
         case SymbolType::R_:
-            return "R'";
+            return false;
         case SymbolType::T_:
-            return "T'";
+            return false;
         case SymbolType::O_:
-            return "O'";
+            return false;
         case SymbolType::J_:
-            return "J'";
-            // Special Symbols
-        case SymbolType::EPSILON:
-            return "ε";
-        case SymbolType::HASHTAG:
-            return "#";
-        case SymbolType::DOLLAR:
-            return "$";
+            return false;
         default:
-            cerr << "Code Generation Function for Symbol Type "<< symbol.getDisplay() << " Not Defined." << endl;
-            abort(FATALEXCEPTION);
+            return symbol.value;
     }
 }
