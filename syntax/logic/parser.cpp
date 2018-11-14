@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by enderqiu on 2018/9/17.
 //
@@ -64,7 +62,7 @@ void Parser::_raiseError(Symbol x) {
         parsingStack.pop();
     }
     cerr<<endl;
-    exit(-1);
+    abort(PARSEEXCEPTION);
 }
 
 void Parser::_raiseErrorEntry(Symbol X, Symbol ip) {
@@ -89,7 +87,7 @@ void Parser::_raiseErrorEntry(Symbol X, Symbol ip) {
         parsingStack.pop();
     }
     cerr<<endl;
-    exit(-1);
+    abort(PARSEEXCEPTION);
 }
 
 void Parser::_dispalyResult() {
@@ -106,7 +104,50 @@ Parser::Parser(InputBuffer inputBuffer, SourceCodeReader sourceCodeReader) {
     this->tree = AST(Symbol(SymbolType::S));
 }
 
-AST Parser::parse(bool verboseMode) {
+AST Parser::parse() {
+    if (shellMode){
+        // Register all possible root symbols. See docs/code_generations.md #Code Generation in Shell Mode
+        possibleRootSymbols.push(Symbol(SymbolType::S));
+        possibleRootSymbols.push(Symbol(SymbolType::A));
+        possibleRootSymbols.push(Symbol(SymbolType::B));
+        possibleRootSymbols.push(Symbol(SymbolType::D));
+        possibleRootSymbols.push(Symbol(SymbolType::F));
+        possibleRootSymbols.push(Symbol(SymbolType::H));
+        possibleRootSymbols.push(Symbol(SymbolType::J));
+        possibleRootSymbols.push(Symbol(SymbolType::K));
+        possibleRootSymbols.push(Symbol(SymbolType::L));
+        possibleRootSymbols.push(Symbol(SymbolType::R));
+        possibleRootSymbols.push(Symbol(SymbolType::U));
+
+        // try all possible syntax trees
+        AST rootAST;
+        while(!possibleRootSymbols.empty()){
+            // reset the parsing stack and the input buffer
+            this->parsingStack.clear();
+            this->sourceCodeReader.resetOffset();
+            this->inputBuffer.reset();
+            this->parsingStack.push(Symbol(SymbolType::HASHTAG));
+            this->parsingStack.push(possibleRootSymbols.top());
+            this->parsingTable = ParsingTable();
+            this->tree = AST(possibleRootSymbols.top());
+            try {
+                rootAST = _parse();
+            }
+            catch (...){
+                possibleRootSymbols.pop();  // pop the possible invalid symbol
+                continue;
+            }
+            break;
+        }
+        if (possibleRootSymbols.empty()){
+            // No valid symbols left
+            cerr << "ERROR: Syntax Error: No valid root node found." << endl;
+        }else{
+            // successfully parsed with a root symbol
+            if (verboseMode) _dispalyResult();
+            return rootAST;
+        }
+    }
     AST rootAST = _parse();
     if (verboseMode) _dispalyResult();
     return rootAST;

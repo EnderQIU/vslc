@@ -7,6 +7,8 @@
 
 
 #include "../../lexical/structure/token.h"
+#include "../../utils/shortcuts.h"
+
 
 enum class SymbolType {
     // Inherited from TokenType, removed some non-grammatical token types

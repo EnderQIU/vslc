@@ -8,6 +8,8 @@
 #include <stack>
 
 #include "symbol.h"
+#include "../../utils/shortcuts.h"
+
 
 using namespace std;
 
@@ -19,6 +21,7 @@ public:
     Symbol top();
     void pop();
     void push(Symbol symbol);
+    void clear();
     bool empty();
 };
 

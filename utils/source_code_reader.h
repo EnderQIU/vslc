@@ -10,6 +10,8 @@
 #include <fstream>
 #include <vector>
 
+extern bool verboseMode, shellMode;
+
 using namespace std;
 
 class SourceCodeReader{
@@ -28,7 +30,8 @@ public:
     char lookNextChar();  // get next char without move offset
     string getLine(unsigned long line_num);
     bool isEOF();  // offset reaches the End Of File.
-    SourceCodeReader() = default;
+    SourceCodeReader();   // Constructor for shell mode
+    void addLine(string aline);
 };
 
 

@@ -9,6 +9,8 @@
 #include <iostream>
 
 #include "symbol.h"
+#include "../../utils/shortcuts.h"
+
 
 using namespace std;
 

@@ -37,7 +37,7 @@ install    <DIR> XX-XX-XX XX:XX
 - Hit the `Configure` button to specify the generator for this project as `Visual Studio 15 2017` and choose `Use default native compilers`.
 - Hit the `Generate` button to generate a Visual Studio Solution.
 
-3. Open `LLVM.sln` and select the target `INSTALL` as the startup item. Then click `Project > Build Solution`.
+3. Open `LLVM.sln` and select the target `INSTALL` as the startup item. Then click `Generate` > `Generate INSTALL`.
 
 4. Create a system environment variable named `LLVM_DIR` with the value of the `install\lib\cmake` directory's **full path**.
 
@@ -71,7 +71,7 @@ mkdir VSLC/
 cd VSLC/
 git clone git@github.com:EnderQIU/vslc.git src/
 mkdir build/
-cd build/
+cd bui
 
 brew install llvm
 
@@ -82,6 +82,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug -G "Xcode" ../src
 ```
 
 ## Usage
+If specified a source file name, it will compile it and output the binary IR code file.
 ```bash
 > vslc --help
 usage: vslc [options] ... filename
@@ -89,6 +90,19 @@ options:
   -v, --verbose    Enable verbose mode, display the output of scanner and parser.
   -o, --output     Specify output file name. Default is a.out. (string [=a.out])
   -?, --help       print this message
+```
+
+
+Else, it will enter the interactive shell mode. The '-v' option is still valid.
+Use the backslash to start a new line.
+```bash
+> vslc
+VSLC v0.1 interactive shell
+>>> FUNC main(){\
+>>> VAR i\
+>>> i := i + 1\
+>>> }
+>>> 
 ```
 
 ## Acknowledgement

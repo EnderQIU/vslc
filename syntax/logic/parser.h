@@ -11,8 +11,11 @@
 #include "../structure/production.h"
 #include "../structure/parsing_table.h"
 #include "../../utils/source_code_reader.h"
+#include "../../utils/shortcuts.h"
 
 #include <algorithm>
+#include <utility>
+
 
 class Parser {
 private:
@@ -24,6 +27,7 @@ private:
     Symbol X;
     SourceCodeReader sourceCodeReader;
     AST tree;
+    stack<Symbol> possibleRootSymbols;
 
     void _raiseError(Symbol s);
     void _raiseErrorEntry(Symbol X, Symbol ip);
@@ -31,7 +35,7 @@ private:
     void _dispalyResult();
 public:
     explicit Parser(InputBuffer inputBuffer, SourceCodeReader sourceCodeReader);
-    AST parse(bool verboseMode);
+    AST parse();
 };
 
 
