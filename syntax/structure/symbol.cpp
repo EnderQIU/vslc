@@ -82,7 +82,7 @@ Symbol::Symbol(Token token) {
             this->type = SymbolType::TEXT;
             break;
         default:
-            cerr<<"FATAL ERROR: Error: No such token"<<endl;
+            cout<<"FATAL ERROR: Error: No such token"<<endl;
             abort(FATALEXCEPTION);
     }
     this->value = token.value;
@@ -224,7 +224,7 @@ string Symbol::getDisplay() {
         case SymbolType::DOLLAR:
             return "$";
         default:
-            cerr<<"FATAL ERROR: Error: Can't display such symbol."<<endl;
+            cout<<"FATAL ERROR: Error: Can't display such symbol."<<endl;
             abort(FATALEXCEPTION);
     }
 }

@@ -35,7 +35,7 @@ int shell(){
         }
 
         SourceCodeReader reader = SourceCodeReader();
-        if (endswith(aline, "\\")){
+        if (endswith(aline, "\\")){  // if line ends with a back-slash, enter multi-lines mode
             // multiple lines mode
             while (endswith(aline, "\\")){
                 aline.erase(aline.end() - 1);
@@ -69,15 +69,15 @@ int shell(){
         }
         catch (ScanException & exc)
         {
-            if (verboseMode) cerr << exc.what() << endl;
+            if (verboseMode) cout << exc.what() << endl;
         }
         catch (ParseException & exc)
         {
-            if (verboseMode) cerr << exc.what() << endl;
+            if (verboseMode) cout << exc.what() << endl;
         }
         catch (CodeGenException & exc)
         {
-            if (verboseMode) cerr << exc.what() << endl;
+            if (verboseMode) cout << exc.what() << endl;
         }
     }
 }
@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
     verboseMode = cmdParser.exist("verbose");
     outputFileName = cmdParser.get<string>("output");
     if (outputFileName.empty()) {
-        cerr << "Please specify a output file." << endl << cmdParser.usage();
+        cout << "Please specify a output file." << endl << cmdParser.usage();
         return 0;
     }
     if (cmdParser.rest().empty()) {
@@ -131,20 +131,20 @@ int main(int argc, char* argv[]) {
         // init LLVM engine
         LLVMEngine::instance();
         // IR code generation
-        rootNode.gen<void>();
+        //rootNode.gen<void>();
 
     }
     catch (ScanException & exc)
     {
-        if (verboseMode) cerr << exc.what() << endl;
+        if (verboseMode) cout << exc.what() << endl;
     }
     catch (ParseException & exc)
     {
-        if (verboseMode) cerr << exc.what() << endl;
+        if (verboseMode) cout << exc.what() << endl;
     }
     catch (CodeGenException & exc)
     {
-        if (verboseMode) cerr << exc.what() << endl;
+        if (verboseMode) cout << exc.what() << endl;
     }
 
 

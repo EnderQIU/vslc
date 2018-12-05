@@ -41,52 +41,52 @@ AST Parser::_parse() {
 }
 
 void Parser::_raiseError(Symbol x) {
-    cerr<<"ERROR: Parser Error at line: "<<ip.line<<" column: "<<ip.column<<endl;
-    cerr<<sourceCodeReader.getLine(ip.line)<<endl;
-    for (int i = 0; i < ip.column - 1; i++) cerr<<" ";
-    cerr<<"^";
-    for (int i = 0; i < ip.value.size() - 1; i++) cerr<<"~";
-    cerr<<endl;
-    cerr<<"Symbol "<<x.getDisplay()<<" (referencing of "<<x.getTypeName()<<") which on top of parsing stack is a terminal."<<endl;
-    cerr<<"==================="<<endl;
-    cerr<<"Current parser information:"<<endl;
-    cerr<<"Input buffer( most recent 5 ): ";
+    cout<<"ERROR: Parser Error at line: "<<ip.line<<" column: "<<ip.column<<endl;
+    cout<<sourceCodeReader.getLine(ip.line)<<endl;
+    for (int i = 0; i < ip.column - 1; i++) cout<<" ";
+    cout<<"^";
+    for (int i = 0; i < ip.value.size() - 1; i++) cout<<"~";
+    cout<<endl;
+    cout<<"Symbol "<<x.getDisplay()<<" (referencing of "<<x.getTypeName()<<") which on top of parsing stack is a terminal."<<endl;
+    cout<<"==================="<<endl;
+    cout<<"Current parser information:"<<endl;
+    cout<<"Input buffer( most recent 5 ): ";
     for (int i = 0; i < 5 && !inputBuffer.is$(); i++){
-        cerr<<inputBuffer.present().getDisplay();
+        cout<<inputBuffer.present().getDisplay();
         inputBuffer.next();
     }
-    cerr<<endl;
-    cerr<<"Parsing Stack( most recent 5 ): ";
+    cout<<endl;
+    cout<<"Parsing Stack( most recent 5 ): ";
     for (int i = 0; i < 5 && !parsingStack.empty(); i++){
-        cerr<<parsingStack.top().getDisplay();
+        cout<<parsingStack.top().getDisplay();
         parsingStack.pop();
     }
-    cerr<<endl;
+    cout<<endl;
     abort(PARSEEXCEPTION);
 }
 
 void Parser::_raiseErrorEntry(Symbol X, Symbol ip) {
-    cerr<<"ERROR: Parser Error at line: "<<ip.line<<" column: "<<ip.column<<endl;
-    cerr<<sourceCodeReader.getLine(ip.line)<<endl;
-    for (int i = 0; i < ip.column - 1; i++) cerr<<" ";
-    cerr<<"^";
-    for (int i = 0; i < ip.value.size() - 1; i++) cerr<<"~";
-    cerr<<endl;
-    cerr<<"M["<<X.getDisplay()<<", "<<ip.getDisplay()<<"] is an error entry."<<endl;
-    cerr<<"==================="<<endl;
-    cerr<<"Current parser information:"<<endl;
-    cerr<<"Input buffer (most recent 5): ";
+    cout<<"ERROR: Parser Error at line: "<<ip.line<<" column: "<<ip.column<<endl;
+    cout<<sourceCodeReader.getLine(ip.line)<<endl;
+    for (int i = 0; i < ip.column - 1; i++) cout<<" ";
+    cout<<"^";
+    for (int i = 0; i < ip.value.size() - 1; i++) cout<<"~";
+    cout<<endl;
+    cout<<"M["<<X.getDisplay()<<", "<<ip.getDisplay()<<"] is an error entry."<<endl;
+    cout<<"==================="<<endl;
+    cout<<"Current parser information:"<<endl;
+    cout<<"Input buffer (most recent 5): ";
     for (int i = 0; i < 5 && !inputBuffer.is$(); i++){
-        cerr<<inputBuffer.present().getDisplay();
+        cout<<inputBuffer.present().getDisplay();
         inputBuffer.next();
     }
-    cerr<<endl;
-    cerr<<"Parsing Stack (most recent 5): ";
+    cout<<endl;
+    cout<<"Parsing Stack (most recent 5): ";
     for (int i = 0; i < 5 && !parsingStack.empty(); i++){
-        cerr<<parsingStack.top().getDisplay();
+        cout<<parsingStack.top().getDisplay();
         parsingStack.pop();
     }
-    cerr<<endl;
+    cout<<endl;
     abort(PARSEEXCEPTION);
 }
 
@@ -116,6 +116,7 @@ AST Parser::parse() {
         possibleRootSymbols.push(Symbol(SymbolType::J));
         possibleRootSymbols.push(Symbol(SymbolType::K));
         possibleRootSymbols.push(Symbol(SymbolType::L));
+        possibleRootSymbols.push(Symbol(SymbolType::T));
         possibleRootSymbols.push(Symbol(SymbolType::R));
         possibleRootSymbols.push(Symbol(SymbolType::U));
 
@@ -141,7 +142,7 @@ AST Parser::parse() {
         }
         if (possibleRootSymbols.empty()){
             // No valid symbols left
-            cerr << "ERROR: Syntax Error: No valid root node found." << endl;
+            cout << "ERROR: Syntax Error: No valid root node found." << endl;
         }else{
             // successfully parsed with a root symbol
             if (verboseMode) _dispalyResult();

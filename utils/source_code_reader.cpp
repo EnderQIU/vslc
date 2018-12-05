@@ -7,7 +7,7 @@
 SourceCodeReader::SourceCodeReader(string filename) {
     ifstream fin(filename.c_str());
     if(!fin){
-        cerr << "ERROR: Source Code Reader: Cannot open " << filename << endl;
+        cout << "ERROR: Source Code Reader: Cannot open " << filename << endl;
         exit(-1);
     }
     this->filename = filename;
@@ -19,7 +19,7 @@ SourceCodeReader::SourceCodeReader(string filename) {
         content += s + '\n';
     }
     if (content.empty()){
-        cerr<<"ERROR: Source Code Reader: Empty source code file."<<endl;
+        cout<<"ERROR: Source Code Reader: Empty source code file."<<endl;
         exit(-1);
     }
     len = content.size();
@@ -34,7 +34,7 @@ void SourceCodeReader::resetOffset() {
 char SourceCodeReader::getNextChar() {
     offset++;
     if (offset > len){
-        cerr<<"FATAL ERROR: Source Code Reader: Offset overflow."<<endl;
+        cout<<"FATAL ERROR: Source Code Reader: Offset overflow."<<endl;
         exit(-1);
     }
     if (line[line_num - 1][column - 1] == '\n'){

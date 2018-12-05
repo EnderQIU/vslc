@@ -7,7 +7,7 @@
 
 Symbol ParsingStack::top() {
     if (symbols.empty()) {
-        cerr<<"FATAL ERROR: Parser Error: Call top() when parsing stack is empty"<<endl;
+        cout<<"FATAL ERROR: Parser Error: Call top() when parsing stack is empty"<<endl;
         abort(PARSEEXCEPTION);
     }
     return symbols.top();

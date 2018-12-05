@@ -278,20 +278,20 @@ void Scanner::_scan(){
 }
 
 void Scanner:: _raiseScanError(string reason) {
-    cerr<<"ERROR: Lexical Error: "<<reason<<" at line "<<source_code.line_num<<" column "<<source_code.column - char_stack.size()<<"."<<endl;
-    cerr<<source_code.getLine(source_code.line_num);
-    for (int i = 0; i < source_code.column - char_stack.size(); i++) cerr<<' ';
-    if (!char_stack.empty()) for (int i = 0; i < char_stack.size(); i++) cerr<<'~';
-    cerr<<'^'<<endl;
-    cerr<<"Present DFA-Ext(1) information:"<<endl;
-    cerr<<"State: "<<state<<endl;
-    cerr<<"Char stack: "<<char_stack<<endl;
-    cerr<<"Present char: '"<<present_char<<"'"<<endl;
+    cout<<"ERROR: Lexical Error: "<<reason<<" at line "<<source_code.line_num<<" column "<<source_code.column - char_stack.size()<<"."<<endl;
+    cout<<source_code.getLine(source_code.line_num);
+    for (int i = 0; i < source_code.column - char_stack.size(); i++) cout<<' ';
+    if (!char_stack.empty()) for (int i = 0; i < char_stack.size(); i++) cout<<'~';
+    cout<<'^'<<endl;
+    cout<<"Present DFA-Ext(1) information:"<<endl;
+    cout<<"State: "<<state<<endl;
+    cout<<"Char stack: "<<char_stack<<endl;
+    cout<<"Present char: '"<<present_char<<"'"<<endl;
     abort(SCANEXCEPTION);
 }
 
 void Scanner::_raiseFatalError(string reason) {
-    cerr<<"FATAL ERROR: Lexical error: "<<reason<<"."<<endl;
+    cout<<"FATAL ERROR: Lexical error: "<<reason<<"."<<endl;
     abort(SCANEXCEPTION);
 }
 

@@ -67,7 +67,7 @@ string Token::getDisplay() {
         case TokenType::COMMENT:
             return "COMMENT";
         default:
-            cerr<<"FATAL ERROR: Error: No such token"<<endl;
+            cout<<"FATAL ERROR: Error: No such token"<<endl;
             exit(-1);
     }
 }
